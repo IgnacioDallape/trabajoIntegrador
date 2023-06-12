@@ -1,5 +1,8 @@
 const express = require('express')
 const app = express()
+app.use(express.json())
+const PORT = 8080
+const Database = require('./dao/mongoDb/db')
 
 
 // static
@@ -21,11 +24,45 @@ const server = http.createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(server)
 
+
+
 app.get('/', (req,res) => {
     res.send('Bienvenido!')
 })
 
-server.listen(8080, () =>{
-    console.log('corriendo en el puerto: ', 8080)
+server.listen(PORT, () =>{
+    console.log('corriendo en el puerto: ', PORT)
+    Database.connect()
+})
+
+//db
+
+const Product = require('./dao/models/models')
+
+app.get('/getProducts',  (req,res) => {
+    Product.find({})
+    .then( pr => {
+        console.log(pr)
+        res.status(200).send(pr)
+    })
+    .catch( err => {
+        console.log(err)
+        res.status(500).send('error')
+    })})
+
+app.post('/saveProducts', (req,res) => {
+    let newPr = req.body
+    let product = new Product(newPr)
+    product = product.save()
+    .then( pr => {
+        res.status(201).send({
+            msg: 'producto guardado',
+            data: pr
+        })
+    })
+    .catch( err => {
+        console.log(err)
+        res.status(500).send('error')
+    })
 })
 
