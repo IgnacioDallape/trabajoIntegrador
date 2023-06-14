@@ -1,0 +1,17 @@
+.header{
+    display: flex;
+    justify-content: space-evenly;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    background-color: bisque;
+}
+
+.header__letter{
+    color: #00b6ff;;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "title": "papa",
+    "price": 100,
+    "category": "verdura",
+    "code": 3060,
+    "id": "1"
+  },
+  {
+    "title": "palta",
+    "price": 700,
+    "category": "verdura",
+    "code": 2,
+    "id": "2"
+  }
+]

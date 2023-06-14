@@ -8,15 +8,18 @@ class ProductManager {
 
     //funciones
 
-    async addProducts(name, price, code, category){
+    async addProducts(title, price, code, category){
         try{
-            if(!name || !price || !code || !category){
+            if(!title || !price || !code || !category){
                 console.log(' complete todos los campos ')
                 return false
             }
 
             let reading = await this.getProducts()
-            reading = reading.map( e => e.code === code )
+            console.log(reading)
+            if(reading){
+                reading = reading.find( e => e.code === code )
+            }
     
             if(reading){
                 console.log('codigo repetido')
@@ -24,7 +27,7 @@ class ProductManager {
             }
 
             const newProduct = {
-                name: name,
+                title: title,
                 price: price,
                 category: category,
                 code: code,
@@ -32,7 +35,7 @@ class ProductManager {
             }
 
             this.products.push(newProduct)
-            await fs.promises.writeFile('./products.json', JSON.stringify(this.products, null, 2), 'utf-8')
+            await fs.promises.writeFile('./src/dao/fileSystem/api/productManager/products.json', JSON.stringify(this.products, null, 2), 'utf-8')
             console.log('producto guardado', this.products)
             return this.products
         } catch ( err ) {
@@ -43,19 +46,17 @@ class ProductManager {
 
     async getProducts(){
         try{
-            let prod = await fs.promises.readFile('./products.json', 'utf-8')
-            prod = JSON.parse(prod)
-    
-            if(prod !== null && prod !== undefined && prod.lenght > 0){
-                this.products = prod
-                return
-            } else {
+            let prod = await fs.promises.readFile('./src/dao/fileSystem/api/productManager/products.json', 'utf-8')
+            if(!prod || prod.lenght > 0){
                 this.products = []
                 return
             }
+            prod = JSON.parse(prod)
+            this.products = prod
+            return this.products
         }   catch (err) {
             console.log(err, 'error en get products')
-            return this.products = []
+            return false
         }
     }
 
@@ -64,49 +65,44 @@ class ProductManager {
             let prod = await this.getProducts()
             if(prod == []){
                 console.log('no hay productos en el json')
-                return 
+                return false
             } 
-            let mapping = prod.map( e => e.id === id)
-            if(!mapping){
+            let finding = prod.find( e => e.id === id)
+            if(!finding){
                 console.log('no existe producto con id: ', id)
-                return
+                return false
             }
-            console.log(mapping)
-            return mapping
+            return finding
         } catch (err){
             console.log(err, 'error en getProductsById')
             return false
         }
     }
 
-    async updateProducts(id, modification){
+    async updateProducts(modification, id ){
         try{
             let getting = await this.getProductsById(id)
-            
+            let getProd = await this.getProducts()
             if(!getting){
                 console.log('no se encontro producto con id: ', id)
-                return
+                return false
             }
-
-            let prodMap = getting.map( e  => e.code === code)
-
-            if(prodMap){
-                console.log(`no existe un producto con el code : ${code}`)
-                return
+            if(getting.code === modification.code ){
+                console.log(`ya existe un producto con el code ${modification.code} `)
+                return false
             }
-
-            let prodIndex = getting.findIndex( e => e.id === id)
+            console.log('pasaste')
+            let prodIndex = getProd.findIndex( e => e.id === id)
             if(prodIndex == -1) {
                 console.log(` no se pudo encontrar el indice del producto `)
-                return
+                return false
             }
-
             this.products[prodIndex] = {...getting, ...modification, id: id}
-            console.log( this.products[prodIndex])
-            await fs.promises.writeFile('./products.json', JSON.stringify(this.products, null, 2), 'utf-8')
+            console.log( this.products)
+            await fs.promises.writeFile('./src/dao/fileSystem/api/productManager/products.json', JSON.stringify(this.products, null, 2), 'utf-8')
+            let a = await fs.promises.readFile('./products.json', 'utf-8')
+            console.log(a)
             return this.products
-
-
         } catch (err) {
             console.log(err, 'error en updateProducts')
             return false
@@ -121,15 +117,13 @@ class ProductManager {
                 console.log(`no existe el producto con id : ${id}`)
                 return
             }
-    
             let deleteFindIndex = this.products.findIndex(e => e.id === id)
             if(!deleteFindIndex == -1){
                 console.log('no podemos encontrar el indice del producto a eliminar')
                 return
             }
-    
             this.products.splice(deleteFindIndex, 1)
-            await fs.promises.writeFile('./products.json', JSON.stringify(this.products, null, 2), 'utf-8')
+            await fs.promises.writeFile('./src/dao/fileSystem/api/productManager/products.json', JSON.stringify(this.products, null, 2), 'utf-8')
             return this.products
         } catch (err) {
             console.log(err, ` error en deleteProducts `)
@@ -137,10 +131,6 @@ class ProductManager {
         }
     }
 
-
-
-
-
-
 }
 
+module.exports = ProductManager

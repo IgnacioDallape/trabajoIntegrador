@@ -3,6 +3,16 @@ const app = express()
 app.use(express.json())
 const PORT = 8080
 const Database = require('./dao/mongoDb/db')
+const routerProduct = require('./dao/fileSystem/api/productManager/products.routes')
+const routerCart = require('./dao/fileSystem/api/cartManager/cart.routes')
+const routerIndex = require('./routes/index.routes')
+
+// routes
+
+app.use('/products', routerProduct)
+app.use('/carts', routerCart)
+app.use('/index', routerIndex)
+
 
 
 // static
@@ -15,7 +25,7 @@ const handlebars = require('express-handlebars')
 
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')
-app.set('views engine', 'handlebars')
+app.set('view engine', 'handlebars')
 
 //socket
 
