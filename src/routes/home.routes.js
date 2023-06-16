@@ -13,7 +13,6 @@ router.get('/', (req,res) => {
         console.log(err)
         res.status(500).send(err)
     }
-
 })
 
 module.exports = router

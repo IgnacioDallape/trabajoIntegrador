@@ -1,8 +1,5 @@
 const socket = io()
 
-
-
-
 socket.on('bienvenida', (data) => {
     console.log(data)
 })
