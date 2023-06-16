@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="p-3 flex">
+        <form onsubmit="return addMessage()">
+            <div class="row align-items-center center">
+                <div class="col-md-1">
+                    <label for="userMail">Mail</label>
+                </div>
+                <div class="col-md-2">
+                    <input type="email" name="userMail" class="form-control"  required id="userMail" placeholder="Name" value="">
+                </div>
+            </div>
+            <div class="row mt-2 align-items-center center">
+                <div class="col-md-1">
+                    <label for="userMessage">Mensaje</label>
+                </div>
+                <div class="col-md-2">
+                    <textarea name="userMessage" class="form-control" rows="5" required id="userMessage"></textarea>
+                </div>
+            </div>
+
+            <div>
+                <div class="iota center">
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </div>
+        </form>
+
+        
+    </div>
+    <div id="box" class="box">
+
+
+    </div>
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<link rel="stylesheet" href="/css/index.css">
+<script src="/js/chat.js"></script>

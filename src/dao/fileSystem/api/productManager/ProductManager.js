@@ -8,9 +8,9 @@ class ProductManager {
 
     //funciones
 
-    async addProducts(title, price, code, category){
+    async addProducts(title, description, price, thumbnail, code, stock, status, category){
         try{
-            if(!title || !price || !code || !category){
+            if(!title || !description || !price || !thumbnail || !code || !stock || !status || !category){
                 console.log(' complete todos los campos ')
                 return false
             }
@@ -28,9 +28,13 @@ class ProductManager {
 
             const newProduct = {
                 title: title,
+                description: description,
                 price: price,
-                category: category,
+                thumbnail: thumbnail,
+                stock: stock,
+                status: status,
                 code: code,
+                category: category,
                 id: uuid4()
             }
 

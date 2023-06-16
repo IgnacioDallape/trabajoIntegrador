@@ -1,16 +1,57 @@
 [
   {
-    "title": "papa",
-    "price": 100,
+    "title": "palta",
+    "description": "Una palta",
+    "price": 800,
+    "thumbnail": "Sin imagen",
+    "stock": 25,
+    "status": true,
+    "code": "palta",
     "category": "verdura",
-    "code": 3060,
     "id": "1"
   },
   {
-    "title": "palta",
-    "price": 700,
+    "title": "papa",
+    "description": "Una papa",
+    "price": 200,
+    "thumbnail": "Sin imagen",
+    "stock": 25,
+    "status": true,
+    "code": "papa",
     "category": "verdura",
-    "code": 2,
     "id": "2"
+  },
+  {
+    "title": "zanahoria",
+    "description": "Una zanahoria",
+    "price": 100,
+    "thumbnail": "Sin imagen",
+    "stock": 25,
+    "status": true,
+    "code": "zanahoria",
+    "category": "verdura",
+    "id": "3"
+  },
+  {
+    "title": "camote",
+    "description": "Una camote",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "stock": 25,
+    "status": true,
+    "code": "camote",
+    "category": "verdura",
+    "id": "4"
+  },
+  {
+    "title": "brocoli",
+    "description": "Una brocoli",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "stock": 25,
+    "status": true,
+    "code": "brocoli",
+    "category": "verdura",
+    "id": "5"
   }
 ]

@@ -15,3 +15,34 @@
     justify-content: center;
     align-items: center;
 }
+
+.box{
+    border: 1px black solid;
+}
+
+/* button enviar */
+
+.iota .btn-primary {
+    color: #52C11F;
+    border-color: #52C11F;
+}
+.iota .btn {
+    display: inline-block;
+    margin: 4px;
+    font-size: inherit;
+    line-height: 1.42;
+    padding: 0.6em 1.6em;
+    font-weight: normal;
+    border-width: 2px;
+    border-style: solid;
+    background: transparent;
+    border-radius: 1.46em;
+    cursor: pointer;
+    font-family: "Booster Next FY", "Avenir Next", Avenir, sans-serif;
+    user-select: none;
+    vertical-align: bottom;
+    position: relative;
+    border-style: solid;
+    overflow: hidden;
+    transition: background-color 0.3s, color 0.3s;
+}

@@ -34,9 +34,9 @@ router.get('/:pid', async (req,res) => {
 })
 
 router.post('/', async (req,res) => {
-    let {title, price, code, category} = req.body;
+    const { title, description, price, thumbnail, code, stock, status, category } = req.body;
     try{
-        let addingProd = await productManager.addProducts(title, price, code, category)
+        let addingProd = await productManager.addProducts(title, description, price, thumbnail, code, stock, status, category)
         if(!addingProd){
             console.log('no se pudo añadir el producto')
             res.status(500).send(`no se pudo añadir el producto ${title}`)

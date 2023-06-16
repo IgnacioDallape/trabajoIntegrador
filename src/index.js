@@ -6,14 +6,20 @@ const Database = require('./dao/mongoDb/db')
 const routerProduct = require('./dao/fileSystem/api/productManager/products.routes')
 const routerCart = require('./dao/fileSystem/api/cartManager/cart.routes')
 const routerIndex = require('./routes/index.routes')
-
+const routerHome = require('./routes/home.routes')
+const routerMongoDb = require('./dao/mongoDb/mongoDb.routes')
+const routerChat = require('./routes/chat.routes')
+const realTimeRouter = require('./routes/realtime.routes')
 // routes
 
 app.use('/products', routerProduct)
 app.use('/carts', routerCart)
 app.use('/index', routerIndex)
-
-
+app.use('/home', routerHome)
+app.use('/mongo', routerMongoDb)
+app.use('/chat', routerChat)
+app.use('/chat', routerChat)
+app.use('/realtimeproducts', realTimeRouter)
 
 // static
 
@@ -36,43 +42,42 @@ const io = new Server(server)
 
 
 
-app.get('/', (req,res) => {
+app.get('/', (req, res) => {
     res.send('Bienvenido!')
 })
 
-server.listen(PORT, () =>{
+server.listen(PORT, () => {
     console.log('corriendo en el puerto: ', PORT)
     Database.connect()
 })
 
-//db
+//io
 
-const Product = require('./dao/models/models')
+let messages = []
+const dbManager = require('./dao/mongoDb/productManagerMDb/ProductManagerMDb')
+const newMongoProd = new dbManager()
 
-app.get('/getProducts',  (req,res) => {
-    Product.find({})
-    .then( pr => {
-        console.log(pr)
-        res.status(200).send(pr)
-    })
-    .catch( err => {
-        console.log(err)
-        res.status(500).send('error')
-    })})
 
-app.post('/saveProducts', (req,res) => {
-    let newPr = req.body
-    let product = new Product(newPr)
-    product = product.save()
-    .then( pr => {
-        res.status(201).send({
-            msg: 'producto guardado',
-            data: pr
-        })
+io.on('connection', async (socket) => {
+    console.log('nuevo usuario en linea')
+    socket.emit('wellcome','Bienvenido!')
+    socket.on('chat', (data) => {
+        messages.push(data)
+        console.log(messages)
+        io.sockets.emit('chat', messages)
     })
-    .catch( err => {
-        console.log(err)
-        res.status(500).send('error')
-    })
+
+    let prodMongo = await newMongoProd.getProducts()
+    socket.emit('productsMongo', prodMongo)
 })
 
+
+
+//midleware
+
+const socketMiddleware = async (req, res, next) => {
+    let product = new ProductManager();
+    product = await product.getProducts();
+    io.sockets.emit('products', product);
+    next();
+  };
