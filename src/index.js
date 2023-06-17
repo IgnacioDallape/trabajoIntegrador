@@ -75,10 +75,10 @@ io.on('connection', async (socket) => {
 
 //midleware
 
-const socketMiddleware = async (req, res, next) => {
-    let product = new ProductManager();
-    product = await product.getProducts();
-    io.sockets.emit('products', product);
-    next();
-};
-app.use(socketMiddleware)
+// const socketMiddleware = async (req, res, next) => {
+//     let product = new ProductManager();
+//     product = await product.getProducts();
+//     io.sockets.emit('products', product);
+//     next();
+// };
+// app.use(socketMiddleware)
