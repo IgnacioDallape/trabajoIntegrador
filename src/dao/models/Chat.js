@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const ChatSchema = new mongoose.Schema({
 
-    user: {
+    userMail: {
         type: String,
         unique: true,
         required: true,

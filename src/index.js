@@ -60,7 +60,7 @@ const newMongoProd = new dbManager()
 
 io.on('connection', async (socket) => {
     console.log('nuevo usuario en linea')
-    socket.emit('wellcome','Bienvenido!')
+    socket.emit('wellcome', 'Bienvenido!')
     socket.on('chat', (data) => {
         messages.push(data)
         console.log(messages)
@@ -68,7 +68,7 @@ io.on('connection', async (socket) => {
     })
 
     let prodMongo = await newMongoProd.getProducts()
-    socket.emit('productsMongo', prodMongo)
+    io.sockets.emit('productsMongo', prodMongo)
 })
 
 
@@ -80,4 +80,5 @@ const socketMiddleware = async (req, res, next) => {
     product = await product.getProducts();
     io.sockets.emit('products', product);
     next();
-  };
+};
+app.use(socketMiddleware)
