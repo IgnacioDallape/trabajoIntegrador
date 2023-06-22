@@ -18,7 +18,6 @@ const ProductSchema = new mongoose.Schema({
         enum: ['verdura', 'fruta', 'carne', 'pollo', 'pescado']
     }
 }, {
-    timestamps: true,
     versionKey: false
 })
 

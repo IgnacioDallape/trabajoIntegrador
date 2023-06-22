@@ -4,7 +4,6 @@ const ChatSchema = new mongoose.Schema({
 
     userMail: {
         type: String,
-        unique: true,
         required: true,
         trim: true
     },
@@ -14,7 +13,6 @@ const ChatSchema = new mongoose.Schema({
         minlength: 1
     }
 }, {
-    timestamps: true,
     versionKey: false
 })
 

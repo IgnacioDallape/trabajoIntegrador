@@ -7,9 +7,12 @@ const routerProduct = require('./dao/fileSystem/api/productManager/products.rout
 const routerCart = require('./dao/fileSystem/api/cartManager/cart.routes')
 const routerIndex = require('./routes/index.routes')
 const routerHome = require('./routes/home.routes')
-const routerMongoDb = require('./dao/mongoDb/mongoDb.routes')
-const routerChat = require('./routes/chat.routes')
+const routerMongoDb = require('./dao/mongoDb/productsDb.routes')
+const routerChat = require('./dao/mongoDb/chat/chat.routes')
 const realTimeRouter = require('./routes/realtime.routes')
+const productsRouter = require('./dao/mongoDb/productManagerMDb/products.routes')
+const ChatManager = require('./dao/mongoDb/chat/ChatManagerDb')
+
 // routes
 
 app.use('/products', routerProduct)
@@ -18,8 +21,8 @@ app.use('/index', routerIndex)
 app.use('/home', routerHome)
 app.use('/mongo', routerMongoDb)
 app.use('/chat', routerChat)
-app.use('/chat', routerChat)
 app.use('/realtimeproducts', realTimeRouter)
+app.use('/product', productsRouter)
 
 // static
 
@@ -55,30 +58,73 @@ server.listen(PORT, () => {
 
 let messages = []
 const dbManager = require('./dao/mongoDb/productManagerMDb/ProductManagerMDb')
-const newMongoProd = new dbManager()
 
 
 io.on('connection', async (socket) => {
-    console.log('nuevo usuario en linea')
-    socket.emit('wellcome', 'Bienvenido!')
-    socket.on('chat', (data) => {
-        messages.push(data)
-        console.log(messages)
-        io.sockets.emit('chat', messages)
-    })
 
-    let prodMongo = await newMongoProd.getProducts()
-    io.sockets.emit('productsMongo', prodMongo)
+    try{
+        socket.emit('wellcome', 'Bienvenido!')
+        socket.on('mensaje', async (data) => {
+            console.log(data)
+        })
+
+        socket.on('connected', async (data) =>  {
+            console.log(data)
+        })
+
+        const newMongoProd = new dbManager()
+        let prodMongo = await newMongoProd.getProducts()
+        io.sockets.emit('products', prodMongo)
+        
+        // socket.on('chat', async (data) => {
+        //     messages.push(data)
+        //     console.log(messages)
+        //     io.sockets.emit('chat', messages)
+        // })
+
+        socket.on('chat', async (data) => {
+            try{
+                let chat = new ChatManager
+                console.log(data)
+                let adding = await chat.addMessage(data)
+                if(!adding){
+                    console.log('error em index chat addMessage')
+                    return false
+                }
+                let getting = await chat.getMessage()
+                if(!getting){
+                    console.log('error em index chat getMessage')
+                    return false
+                }
+                console.log(getting)
+                io.sockets.emit('chat', getting)
+            } catch (err) {
+                console.log(err, 'error en socket en index / chat')
+                return false    
+            }
+        })
+
+    } catch (err) {
+        console.log(err)
+    }
 })
+
+
 
 
 
 //midleware
 
 // const socketMiddleware = async (req, res, next) => {
-//     let product = new ProductManager();
-//     product = await product.getProducts();
-//     io.sockets.emit('products', product);
-//     next();
+//     try{
+//         let product = new ProductManager();
+//         product = await product.getProducts();
+//         console.log(product)
+//         io.sockets.emit('products', product);
+//         next();
+//     } catch (err) {
+//         console.log(err)
+//     }
 // };
+
 // app.use(socketMiddleware)

@@ -1,12 +1,11 @@
 const fs = require('fs')
-const Product = require('../../models/Models')
+const Product = require('../../models/Product')
 
 class ProductManagerMDb {
 
     async getProducts() {
         try{
             let prodDb = await Product.find({})
-            console.log(prodDb,22)
             if(!prodDb){
                 console.log('prodDb esta vacia')
                 return false

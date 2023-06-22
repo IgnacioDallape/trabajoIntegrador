@@ -1,15 +1,18 @@
 const socket = io()
 
-socket.on('productsMongo', (data) => {
-    console.log(data,222)
+socket.on('connect', () => {
+    console.log('Conectado al servidor de Socket.IO');
+});
+
+socket.emit('connected', 'Nuevo usuario online')
+
+socket.on('products', (data) => {
     render(data)
 })
 
-const render =  (data) => {
-    try{
-
-        console.log(data)
-        const html =  data.map(e => {
+const render = (data) => {
+    try {
+        const html = data.map(e => {
             return (
                 `
                 <div>
@@ -20,11 +23,11 @@ const render =  (data) => {
                 </span>
                 </div>
                 `
-                )
-                
-            }).join('')
-            document.getElementById('box').innerHTML = html
-        } catch (err){
-            console.log(err)
-        }
+            )
+
+        }).join('')
+        document.getElementById('box').innerHTML = html
+    } catch (err) {
+        console.log(err)
+    }
 }
