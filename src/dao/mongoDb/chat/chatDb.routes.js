@@ -2,7 +2,7 @@ const express = require('express')
 const { Router } = express
 const router = new Router()
 const bodyParser = require('body-parser');
-const ChatdbManager = require('./chat/ChatManagerDb')
+const ChatdbManager = require('./ChatManagerDb')
 const dbProducts = new ChatdbManager()
 
 router.use(bodyParser.json());
