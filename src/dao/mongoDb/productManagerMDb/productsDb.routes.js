@@ -33,9 +33,9 @@ router.post('/addProducts', async (req, res, next) => {
     try {
         let prod = req.body
         let addDbProducts = await dbProducts.addProducts(prod)
-        console.log(addDbProducts)
+        console.log(addDbProducts,222)
         if (!addDbProducts) {
-            console.log('error en router de saveProducts db')
+            console.log('error en router de addProducts db')
             res.status(500).send(err)
             return
         }
@@ -47,6 +47,21 @@ router.post('/addProducts', async (req, res, next) => {
     } catch (err) {
         console.log('error en router de saveProducts db')
         res.status(500).send(err)
+    }
+})
+
+router.delete('/delete/carts/:cid/products/:pid', async (req,res) => {
+    try{
+        let cid = req.params.cid
+        let pid = req.params.pid
+        let dbman = new dbManager()
+        let deleting  = dbman.deleteProducts(cid,pid)
+        console.log(deleting)
+        res.status(200).send('producto eliminado: ', deleting)
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send('error en router delete')
     }
 })
 

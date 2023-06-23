@@ -12,6 +12,7 @@ const routerChat = require('./dao/mongoDb/chat/chat.routes')
 const realTimeRouter = require('./routes/realtime.routes')
 const productsRouter = require('./dao/mongoDb/productManagerMDb/products.routes')
 const ChatManager = require('./dao/mongoDb/chat/ChatManagerDb')
+const cartRouterMDb = require('./dao/mongoDb/cartManagerMdb/cartDb.routes')
 
 // routes
 
@@ -23,6 +24,7 @@ app.use('/mongo', routerMongoDb)
 app.use('/chat', routerChat)
 app.use('/realtimeproducts', realTimeRouter)
 app.use('/product', productsRouter)
+app.use('/mongoCarts', cartRouterMDb)
 
 // static
 
@@ -76,11 +78,6 @@ io.on('connection', async (socket) => {
         let prodMongo = await newMongoProd.getProducts()
         io.sockets.emit('products', prodMongo)
         
-        // socket.on('chat', async (data) => {
-        //     messages.push(data)
-        //     console.log(messages)
-        //     io.sockets.emit('chat', messages)
-        // })
 
         socket.on('chat', async (data) => {
             try{
@@ -109,22 +106,3 @@ io.on('connection', async (socket) => {
     }
 })
 
-
-
-
-
-//midleware
-
-// const socketMiddleware = async (req, res, next) => {
-//     try{
-//         let product = new ProductManager();
-//         product = await product.getProducts();
-//         console.log(product)
-//         io.sockets.emit('products', product);
-//         next();
-//     } catch (err) {
-//         console.log(err)
-//     }
-// };
-
-// app.use(socketMiddleware)

@@ -1,25 +1,51 @@
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 const ProductSchema = new mongoose.Schema({
 
-    name: {
+    title: {
         type: String,
         unique: true,
         required: true,
-        trim: true
+        trim: true,
+        index: true
+    },
+    description: {
+        type: String,
+        required: true,
     },
     price: {
         type: Number,
-        required: true
+        required: true,
+    },
+    thumbnail: {
+        type: String,
+        required: true,
+    },
+    stock: {
+        type: Number,
+        required: true,
+    },
+    status: {
+        type: Boolean,
+        required: true,
+    },
+    code: {
+        type: String,
+        unique: true,
+        required: true,
     },
     category: {
         type: String,
         required: true,
-        enum: ['verdura', 'fruta', 'carne', 'pollo', 'pescado']
+        enum: ['higiene', 'cocina', 'verduleria', 'carniceria', 'electrodomesticos']
     }
 }, {
     versionKey: false
 })
+
+ProductSchema.plugin(mongoosePaginate)
+
 
 const Product = mongoose.model('products', ProductSchema)
 
