@@ -1,0 +1,30 @@
+<div >
+    <header class="d-flex align-items-center pt-3 back flex-column" >
+        {{!-- <nav>
+            <button class="btn btn-primary">Inicio</button>
+            <button class="btn btn-primary">Productos</button>
+            <button class="btn btn-primary">Ayuda</button>
+        </nav> --}}
+        <div>
+            <h2>Productos</h2>
+        </div>
+    </header>
+    <div id="prodBox" class="d-flex align-items-center  flex-wrap pt-4 flex-column">
+
+    </div>
+    <main class="d-flex flex-column align-items-center justify-content-center pt-3">
+        <div id="paginatedProducts">
+
+        </div>
+        <div class="pt-4">
+            <button id="previusPage" class="btn btn-primary" onclick="previusPageFunction()">pagina previa</button>
+            <button id="nextPage" class="btn btn-primary" onclick="nextPageFunction()" >pagina siguiente</button>
+        </div>
+    </main>
+
+
+
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<link rel="stylesheet" href="/css/index.css">
+<script src="/js/paginate.js"></script>

@@ -10,7 +10,14 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get('/getProducts', async (req, res, next) => {
     try {
-        let getDbProducts = await dbProducts.getProducts()
+        const options = {
+                limit : req.query.limit,
+                page : req.query.page,
+                category : req.query.category,
+                sort: req.query.sort
+        }
+        console.log(options)
+        let getDbProducts = await dbProducts.getProducts(options)
         if (!getDbProducts) {
             console.log('error en router de getproducts db')
             res.status(500).send(err)
@@ -50,20 +57,34 @@ router.post('/addProducts', async (req, res, next) => {
     }
 })
 
-router.delete('/delete/carts/:cid/products/:pid', async (req,res) => {
+// router.delete('/delete/carts/:cid/products/:pid', async (req,res) => {
+//     try{
+//         let cid = req.params.cid
+//         let pid = req.params.pid
+//         let dbman = new dbManager()
+//         let deleting  = dbman.deleteCartProducts(cid,pid)
+//         console.log(deleting)
+//         res.status(200).send('producto eliminado: ', deleting)
+
+//     } catch (err) {
+//         console.log(err)
+//         res.status(500).send('error en router delete')
+//     }
+// })
+
+router.delete('/delete/products/:pid', async (req,res) => {
     try{
-        let cid = req.params.cid
         let pid = req.params.pid
         let dbman = new dbManager()
-        let deleting  = dbman.deleteProducts(cid,pid)
-        console.log(deleting)
-        res.status(200).send('producto eliminado: ', deleting)
+        let deleting  = await dbman.deleteProducts(pid)
+        res.status(200).send('producto eliminado: ' + JSON.stringify(deleting));
 
     } catch (err) {
         console.log(err)
         res.status(500).send('error en router delete')
     }
 })
+
 
 
 

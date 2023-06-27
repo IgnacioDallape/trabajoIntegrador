@@ -10,7 +10,7 @@ const routerHome = require('./routes/home.routes')
 const routerMongoDb = require('./dao/mongoDb/productManagerMDb/productsDb.routes')
 const routerChat = require('./dao/mongoDb/chat/chat.routes')
 const realTimeRouter = require('./routes/realtime.routes')
-const productsRouter = require('./dao/mongoDb/productManagerMDb/products.routes')
+const paginateRouter = require('./dao/mongoDb/productManagerMDb/paginatedProducts.routes')
 const ChatManager = require('./dao/mongoDb/chat/ChatManagerDb')
 const cartRouterMDb = require('./dao/mongoDb/cartManagerMdb/cartDb.routes')
 
@@ -23,8 +23,9 @@ app.use('/home', routerHome)
 app.use('/mongo', routerMongoDb)
 app.use('/chat', routerChat)
 app.use('/realtimeproducts', realTimeRouter)
-app.use('/product', productsRouter)
+app.use('/product', paginateRouter)
 app.use('/mongoCarts', cartRouterMDb)
+
 
 // static
 
@@ -60,36 +61,40 @@ server.listen(PORT, () => {
 
 let messages = []
 const dbManager = require('./dao/mongoDb/productManagerMDb/ProductManagerMDb')
+const newMongoProd = new dbManager()
+
+
 
 
 io.on('connection', async (socket) => {
-
-    try{
-        socket.emit('wellcome', 'Bienvenido!')
-        socket.on('mensaje', async (data) => {
-            console.log(data)
-        })
-
-        socket.on('connected', async (data) =>  {
-            console.log(data)
-        })
-
-        const newMongoProd = new dbManager()
-        let prodMongo = await newMongoProd.getProducts()
-        io.sockets.emit('products', prodMongo)
+    
+    try {
         
+        //realtime
+        
+        let prodMongo = await newMongoProd.getProducts()
+        socket.emit('products', prodMongo)
+        socket.emit('products', prodMongo)
+        socket.on('connected', async (data) => {
+            console.log(data, 222);
+        });
+        socket.on('updateProducts', async () => {
+            await emitProducts()
+        })
+
+        //chat
 
         socket.on('chat', async (data) => {
-            try{
+            try {
                 let chat = new ChatManager
                 console.log(data)
                 let adding = await chat.addMessage(data)
-                if(!adding){
+                if (!adding) {
                     console.log('error em index chat addMessage')
                     return false
                 }
                 let getting = await chat.getMessage()
-                if(!getting){
+                if (!getting) {
                     console.log('error em index chat getMessage')
                     return false
                 }
@@ -97,10 +102,37 @@ io.on('connection', async (socket) => {
                 io.sockets.emit('chat', getting)
             } catch (err) {
                 console.log(err, 'error en socket en index / chat')
-                return false    
+                return false
             }
         })
 
+        //paginate
+
+        socket.on('page', async (data) => {
+            try{
+                let {limit, page, category, sort} = data
+                let b = await ({limit, page, category, sort})
+                let a = await newMongoProd.getProducts(b)
+                socket.emit('actualPage', a)
+            } catch (err) {
+                console.log(err)
+            }
+        });
+
+        socket.on('nextPage', async (data) => {
+            console.log(data,22)
+            let a = await newMongoProd.getProducts(data)
+            socket.emit('paginate', a)
+        })
+        socket.on('prevPage', async (data, options) => {
+            let a = await newMongoProd.getProducts(data)
+            socket.emit('paginate', a)
+        })
+
+        let s = newMongoProd.getProducts()
+        socket.emit('paginate', prodMongo);
+    
+    
     } catch (err) {
         console.log(err)
     }

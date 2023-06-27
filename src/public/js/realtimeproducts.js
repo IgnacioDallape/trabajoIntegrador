@@ -6,18 +6,23 @@ socket.on('connect', () => {
 
 socket.emit('connected', 'Nuevo usuario online')
 
-socket.on('products', (data) => {
-    render(data)
-})
+socket.on('products', data => {
+    render(data);
+});
+
+socket.on('updatedProducts', data => {
+    render(data);
+});
+
 
 const render = (data) => {
     try {
-        const html = data.map(e => {
+        const html = data.docs.map(e => {
             return (
                 `
                 <div>
                 <span>
-                <h5> producto: ${e.name}  </h5>
+                <h5> producto: ${e.title}  </h5>
                 <em> precio: ${e.price} </em>   
                 <em> categoria: ${e.category} </em>   
                 </span>
@@ -31,3 +36,4 @@ const render = (data) => {
         console.log(err)
     }
 }
+

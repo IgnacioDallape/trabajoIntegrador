@@ -6,6 +6,10 @@
     background-color: bisque;
 }
 
+.back{
+    background-color: grey;
+}
+
 .header__letter{
     color: #00b6ff;;
 }
