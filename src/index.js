@@ -8,9 +8,9 @@ const routerCart = require('./dao/fileSystem/api/cartManager/cart.routes')
 const routerIndex = require('./routes/index.routes')
 const routerHome = require('./routes/home.routes')
 const routerMongoDb = require('./dao/mongoDb/productManagerMDb/productsDb.routes')
-const routerChat = require('./dao/mongoDb/chat/chat.routes')
+const routerChat = require('./routes/chat.routes')
 const realTimeRouter = require('./routes/realtime.routes')
-const paginateRouter = require('./dao/mongoDb/productManagerMDb/paginatedProducts.routes')
+const paginateRouter = require('./routes/paginatedProducts.routes')
 const ChatManager = require('./dao/mongoDb/chat/ChatManagerDb')
 const cartRouterMDb = require('./dao/mongoDb/cartManagerMdb/cartDb.routes')
 
@@ -67,11 +67,11 @@ const newMongoProd = new dbManager()
 
 
 io.on('connection', async (socket) => {
-    
+
     try {
-        
+
         //realtime
-        
+
         let prodMongo = await newMongoProd.getProducts()
         socket.emit('products', prodMongo)
         socket.emit('products', prodMongo)
@@ -109,9 +109,9 @@ io.on('connection', async (socket) => {
         //paginate
 
         socket.on('page', async (data) => {
-            try{
-                let {limit, page, category, sort} = data
-                let b = await ({limit, page, category, sort})
+            try {
+                let { limit, page, category, sort } = data
+                let b = await ({ limit, page, category, sort })
                 let a = await newMongoProd.getProducts(b)
                 socket.emit('actualPage', a)
             } catch (err) {
@@ -120,19 +120,27 @@ io.on('connection', async (socket) => {
         });
 
         socket.on('nextPage', async (data) => {
-            console.log(data,22)
-            let a = await newMongoProd.getProducts(data)
-            socket.emit('paginate', a)
+            try {
+                console.log(data, 22)
+                let a = await newMongoProd.getProducts(data)
+                socket.emit('paginate', a)
+            } catch (err) {
+                console.log(err)
+            }
         })
         socket.on('prevPage', async (data, options) => {
-            let a = await newMongoProd.getProducts(data)
-            socket.emit('paginate', a)
+            try {
+                let a = await newMongoProd.getProducts(data)
+                socket.emit('paginate', a)
+            }
+            catch (err) {
+                console.log(err)
+            }
         })
-
-        let s = newMongoProd.getProducts()
+        
         socket.emit('paginate', prodMongo);
-    
-    
+
+
     } catch (err) {
         console.log(err)
     }
