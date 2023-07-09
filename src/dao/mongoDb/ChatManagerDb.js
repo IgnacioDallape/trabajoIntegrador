@@ -1,5 +1,5 @@
 const fs = require('fs')
-const Chat = require('../../models/Chat')
+const Chat = require('../models/Chat')
 
 class ChatManager{
     constructor(){

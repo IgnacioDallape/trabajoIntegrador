@@ -1,34 +1,13 @@
 const fs = require('fs')
-const Product = require('../../models/Product')
+const Product = require('../models/Product')
 const mongoose = require('mongoose')
 
 class ProductManagerMDb {
 
 
-    async getProducts(options) {
+    async getProducts(page, limit) {
         try {
-            let a = await options
-
-            let limit = 10;
-            if (options && options.limit !== undefined) {
-                limit = options.limit;
-            }
-
-            let page = 1;
-            if (options && options.page !== undefined) {
-                page = options.page;
-            }
-
-            let category = options && options.category ? options.category : { $in: ['higiene', 'cocina', 'verduleria', 'carniceria', 'electrodomesticos'] };
-
-            let sort = 0;
-            if (options && options.sort !== undefined) {
-                sort = options.sort;
-            }
-
-
-            const products = await Product.paginate({}, { limit, page, category, sort })
-
+            let products = await Product.paginate({}, { limit: limit || 3, page: page || 1 })
             return products
 
         } catch (err) {
@@ -39,6 +18,7 @@ class ProductManagerMDb {
 
     async getProductsById(pid) {
         try {
+            console.log(pid)
             let prodDb = await Product.findOne({ _id: pid })
             if (!prodDb) {
                 console.log(`no se encontro un producto con id ${pid}`)

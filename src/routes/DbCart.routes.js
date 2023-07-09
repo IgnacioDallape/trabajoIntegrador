@@ -2,8 +2,8 @@ const express = require('express')
 const { Router } = express
 const router = new Router()
 const bodyParser = require('body-parser');
-const cartManagerDb = require('./CartManagerMongodb');
-const Cart = require('../../models/Cart');
+const cartManagerDb = require('../dao/mongoDb/CartManagerMongodb');
+const Cart = require('../dao/models/Cart');
 const mongoose = require('mongoose');
 const cartMan = new cartManagerDb()
 
@@ -29,13 +29,12 @@ router.get('/addCart', async (req, res) => {
 router.get('/carts', async (req, res) => {
     try {
         let a = await cartMan.getCarts()
-        console.log(a)
         if (!a) {
             console.log('error en encontrar carritos')
             res.status(500).send('error en encontrar carritos')
             return false
         }
-        res.status(200).send({ a })
+        res.status(200).send(a)
     } catch (err) {
         console.log(err, 'error en getCarts routes')
         res.status(500).send(err)

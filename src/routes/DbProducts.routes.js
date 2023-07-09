@@ -2,7 +2,7 @@ const express = require('express')
 const { Router } = express
 const router = new Router()
 const bodyParser = require('body-parser');
-const dbManager = require('./ProductManagerMDb')
+const dbManager = require('../dao/mongoDb/ProductManagerMDb')
 const dbProducts = new dbManager()
 
 router.use(bodyParser.json());
@@ -71,6 +71,19 @@ router.post('/addProducts', async (req, res, next) => {
 //         res.status(500).send('error en router delete')
 //     }
 // })
+
+router.get('/getProducts/:pid', async (req,res) => {
+    let pid = req.params.pid
+    let productById = await dbProducts.getProductsById(pid)
+    console.log(productById)
+    if(!productById){
+        console.log(`no existe el producto con id ${pid}`)
+        res.status(500).send('no existe el producto')
+        return false
+    }
+    res.status(200).send(`el producto es: ${productById}`)
+    console.log(productById)
+})
 
 router.delete('/delete/products/:pid', async (req,res) => {
     try{

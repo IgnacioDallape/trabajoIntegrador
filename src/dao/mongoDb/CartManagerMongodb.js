@@ -1,7 +1,7 @@
 const fs = require('fs')
-const Cart = require('../../models/Cart')
-const Product = require('../../models/Product')
-const ProductManagerMDb = require('../productManagerMDb/ProductManagerMDb')
+const Cart = require('../models/Cart')
+const Product = require('../models/Product')
+const ProductManagerMDb = require('./ProductManagerMDb')
 const prodMan = new ProductManagerMDb()
 
 class CartManagerMDb {
@@ -20,8 +20,9 @@ class CartManagerMDb {
 
     async getCarts() {
         try {
-            let finding = await Cart.find({})
-            console.log(finding)
+            let finding = Cart.find({})
+            // .then(e => {return e = JSON.stringify(e, null, '\t')})
+            // .catch(err => console.log(err))
             if (!finding) {
                 console.log('no se encontro carritos')
                 return false
