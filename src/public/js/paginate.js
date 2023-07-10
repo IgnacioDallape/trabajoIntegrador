@@ -3,117 +3,27 @@ const socket = io()
 const nextPage = document.getElementById('nextPage')
 const previusPage = document.getElementById('previusPage')
 const products = document.getElementById('prodBox')
-let ret
-let prevPage
-let proxPage
+let productosCarrito = []
 
-
-//paginate
-
-
-// const nextPageFunction = () => {
-//     const query = window.location.search;
-//     const urlParams = new URLSearchParams(query)
-//     let currentPage = urlParams.get('page');
-//     let currentLimit = urlParams.get('limit');
-//     let currentCategory = urlParams.get('category');
-//     let currentSort = urlParams.get('sort');
-//     if (!currentPage) {
-//         currentPage = parseInt(currentPage);
-//         currentPage = 2;
-//     } else {
-//         currentPage = parseInt(currentPage) + 1
-//     }
-//     urlParams.set('page', currentPage);
-
-//     const newUrl = `${window.location.origin}${window.location.pathname}?${urlParams.toString()}`;
-//     proxPage = {
-//         page: currentPage,
-//         limit: currentLimit,
-//         category: currentCategory,
-//         sort: currentSort,
-//     }
-//     window.location.href = newUrl;
-//     console.log(window.location.href, 232)
-//     return proxPage
-// }
-
-// const previusPageFunction = () => {
-//     const query = window.location.search;
-//     const urlParams = new URLSearchParams(query)
-//     let currentPage = urlParams.get('page');
-//     let currentLimit = urlParams.get('limit');
-//     let currentCategory = urlParams.get('category');
-//     let currentSort = urlParams.get('sort');
-//     if (!currentPage) {
-//         currentPage = parseInt(currentPage);
-//         currentPage = 1;
-//     }
-//     if (currentPage > 1) {
-//         currentPage -= 1;
-//     }
-//     urlParams.set('page', currentPage);
-
-//     const newUrl = `${window.location.origin}${window.location.pathname}?${urlParams.toString()}`;
-//     prevPage = {
-//         page: currentPage,
-//         limit: currentLimit,
-//         category: currentCategory,
-//         sort: currentSort,
-//     }
-//     window.location.href = newUrl;
-//     console.log(window.location.href, 232)
-//     return prevPage
-// }
-
-// nextPage.addEventListener('click', () => {
-//     socket.emit('nextPage', proxPage)
-// })
-
-// previusPage.addEventListener('click', () => {
-//     socket.emit('prevPage', prevPage)
-// })
-
-
-// //actual pagina
-
-// const getCurrentPageAndParams = () => {
-//     const query = window.location.search;
-//     const urlParams = new URLSearchParams(query);
-
-//     const currentPage = urlParams.get('page');
-//     const currentLimit = urlParams.get('limit');
-//     const currentCategory = urlParams.get('category');
-//     const currentSort = urlParams.get('sort');
-
-//     return {
-//         page: currentPage,
-//         limit: currentLimit,
-//         category: currentCategory,
-//         sort: currentSort,
-//     };
-// };
-
-
-socket.on('paginate', async (data) => {
-    console.log('Conectado al servidor de Socket.IO');
-    let a = await render(data);
-    const currentPageParams = await getCurrentPageAndParams();
-    socket.emit('page', currentPageParams);
-});
-
-const render = (data) => {
-    const html = data.docs.map((e) => {
-        return `
-        <div style="gap: 1rem;" >
-            <li>
-                producto : ${e.title} <br/>
-                precio: ${e.price}  <br/>
-                stock: ${e.stock}
-            </li>
-        </div>
-    `;
-    });
-    products.innerHTML = html.join('');
+function agregarAlCarrito(title, price) {
+    console.log('Producto agregado al carrito: ', title, ', precio: ', price)
+    let newProd= {
+        title: title,
+        price: price,
+        quantity: prodQuantity(title)
+    }
+    productosCarrito.push(newProd)
 }
+
+function prodQuantity (title){
+    console.log(productosCarrito)
+    let finding = productosCarrito.find( e => e.title == title)
+    if(!finding) return 1
+    console.log(finding.quantity)
+    let quantity = finding.quantity + 1
+    console.log(quantity,'2123')
+    return quantity
+}
+
+
 
