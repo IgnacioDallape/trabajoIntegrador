@@ -19,6 +19,10 @@ const schema = new Schema({
         max: 100,
         unique: true,
     },
+    password: {
+        type: String,
+        required: true,
+    },
     gender: {
         type: String,
     },

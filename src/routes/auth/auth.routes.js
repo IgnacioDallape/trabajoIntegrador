@@ -10,10 +10,9 @@ router.get('/', (req, res) => {
 })
 
 router.post('/register', passport.authenticate('register', {failureRedirect: '/auth/failureRedirect'}) ,(req,res) => {
-    console.log( req.body,3)
     try{
         console.log('usuario registrado')
-        res.redirect('/auth')
+        res.redirect('/login')
     } catch (err) {
         console.log(err)
         res.send(err)
@@ -34,21 +33,23 @@ router.post('/login', async (req,res) => {
     try{
         let body = req.body
         let user = await UserModel.findOne( { email: body.email } )
-        console.log(user)
         if(!user){
-            console.log('usuario no existe')
-            res.send('usuario no existe')
+            console.log('usuario o contraseña invalidos')
+            res.send('usuario o contraseña invalidos')
         }
         if(body.email == 'adminCoder@coder.com'){
-            user.role = admin
+            user.role = 'admin'
         } else {
-            user.role = usuario
+            user.role = 'usuario'
         }
-        console.log(user.password)
         let passwordVerification = isValidPassword(user, body.password)
-        console.log(passwordVerification)
+        if(!passwordVerification){
+            console.log('usuario o contraseña invalidos')
+            res.send('usuario o contraseña invalidos')
+        }
         console.log('ingreso exitoso')
         res.redirect('/product')
+        return user
 
     } catch (err) {
         console.log(err)

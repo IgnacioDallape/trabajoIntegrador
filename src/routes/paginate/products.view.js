@@ -3,6 +3,7 @@ const { Router } = express
 const router = new Router()
 const ProductManagerMDb = require('../../dao/mongoDb/ProductManagerMDb')
 const prodMan = new ProductManagerMDb()
+const UserModel = require('../../dao/models/UserModel')
 
 router.get('/', async (req, res) => {
     try {
@@ -13,12 +14,10 @@ router.get('/', async (req, res) => {
             res.status(500).send('error obteniendo los productos')
             return false
         }
-        console.log(prod)
         let productos = prod.docs.map( e => {
             return { title: e.title, price: e.price, stock: e.stock}
         })
         const { docs, ...rest } = prod
-        console.log(prod)
     
         let links = []
 
@@ -26,7 +25,7 @@ router.get('/', async (req, res) => {
             links.push({label:i, href:'/product/?page=' + i})
         }
 
-        return res.status(200).render('products', {productos, pagination: rest, links })
+        return res.status(200).render('products', {productos, pagination: rest, links  })
     } catch (err) {
         console.log(err)
         res.send(err)
@@ -35,11 +34,6 @@ router.get('/', async (req, res) => {
 
 module.exports = router
 
-// try{
-
-// } catch (err) {
-
-// }
 
 router.get('/', async (req, res) => {
     const { page, limit } = req.query;
