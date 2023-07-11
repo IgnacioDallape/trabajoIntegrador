@@ -7,6 +7,7 @@ const UserModel = require('../../dao/models/UserModel')
 
 router.get('/', async (req, res) => {
     try {
+        const username = req.session.userName;
         let { page, limit } = req.query
         let prod = await prodMan.getProducts(page, limit)
         if(!prod) {
@@ -25,7 +26,7 @@ router.get('/', async (req, res) => {
             links.push({label:i, href:'/product/?page=' + i})
         }
 
-        return res.status(200).render('products', {productos, pagination: rest, links  })
+        return res.status(200).render('products', {productos, pagination: rest, links, username  })
     } catch (err) {
         console.log(err)
         res.send(err)

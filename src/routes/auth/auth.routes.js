@@ -48,6 +48,7 @@ router.post('/login', async (req,res) => {
             res.send('usuario o contraseña invalidos')
         }
         console.log('ingreso exitoso')
+        req.session.userName = req.user.firstName;
         res.redirect('/product')
         return user
 

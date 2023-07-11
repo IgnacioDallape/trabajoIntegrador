@@ -14,10 +14,13 @@
             </div>
         </a>
     </div>
-            <h1>Bienvenido, {{user.firstName}}</h1>
+    <div class="d-flex  justify-content-center align-items-center pb-3 flex-column" >
+            <h1>Bienvenido, {{username}}</h1>
+            <h3>Los productos son:</h3>
+    </div>
 
     {{#each productos}}
-    <div class="d-flex  justify-content-center align-items-center pb-3 flex-column">
+    <div class="d-flex  justify-content-center align-items-center pb-3 flex-column ">
         <p>Producto: {{this.title}} </p>
         <p>Precio: {{this.price}}</p>
         <button class="btn btn-primary" onclick="agregarAlCarrito('{{this.title}}','{{this.price}}')">Agregar al Carrito</button>
