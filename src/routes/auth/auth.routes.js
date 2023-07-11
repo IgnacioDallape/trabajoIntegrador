@@ -39,6 +39,11 @@ router.post('/login', async (req,res) => {
             console.log('usuario no existe')
             res.send('usuario no existe')
         }
+        if(body.email == 'adminCoder@coder.com'){
+            user.role = admin
+        } else {
+            user.role = usuario
+        }
         console.log(user.password)
         let passwordVerification = isValidPassword(user, body.password)
         console.log(passwordVerification)
