@@ -16,6 +16,35 @@ const paginateRouter = require('./routes/paginate/products.view')
 const ChatManager = require('./dao/mongoDb/ChatManagerDb')
 const cartRouterMDb = require('./routes/dbRoutes/DbCart.routes')
 const routerPaginate = require('./routes/paginate/products.routes')
+const authRouter = require('./routes/auth/auth.routes')
+const viewRouter = require('./routes/auth/view.routes')
+const initializePassport = require('./config/passport')
+const registerRouter = require('./routes/register.view')
+const loginRouter = require('./routes/login.view')
+
+//session
+const session = require('express-session')
+const MongoStore = require('connect-mongo')
+const dotenv = require('dotenv')
+dotenv.config()
+let password = process.env.PASSWORD
+
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl:`mongodb+srv://nachoIntegrador:${password}@integradordallape.knrlzeo.mongodb.net/integradorDallape`
+    }) ,
+    secret:'secret',
+    resave:true,
+    saveUninitialized:true
+}))
+
+//passport
+
+const passport = require('passport')
+
+initializePassport()
+app.use(passport.initialize()) 
+app.use(passport.session({}))
 
 // routes
 
@@ -29,6 +58,11 @@ app.use('/product', paginateRouter)
 app.use('/mongoProducts', routerMongoDbProducts)
 app.use('/mongoCarts', cartRouterMDb)
 app.use('/products', routerPaginate)
+app.use('/register', registerRouter)
+app.use('/login', loginRouter)
+app.use('/auth', authRouter)
+app.use('/view', viewRouter)
+
 
 // static
 

@@ -14,15 +14,15 @@ module.exports = {
 
   //-------------function para agregar los usuarios a la db----------------
               //descomentar la preimera vez para cargr los usuarios a la db y luego volver a comentar
-  //             (async () => {
+            //   (async () => {
 
-  //               try {
-  //                 await UserModel.insertMany(users);
-  //                 console.log('Inserted', users.length, 'users');
-  //               } catch (error) {
-  //                 console.error('Error en insert many:', error);
-  //               }
-  //             })();
+            //     try {
+            //       await UserModel.insertMany(users);
+            //       console.log('Inserted', users.length, 'users');
+            //     } catch (error) {
+            //       console.error('Error en insert many:', error);
+            //     }
+            //   })();
               console.log('conexion exitosa a la bd')
             })
       .catch(err => console.log(err))

@@ -1,46 +1,52 @@
 const passport = require("passport")
 const LocalStrategy = require('passport-local').Strategy
 const UserModel = require('../dao/models/UserModel')
-const { createHash, isValidPassword }  = require('../utils/bscrypt')
-
+const { createHash, isValidPassword } = require('../utils/bscrypt')
 const initializePassport = () => {
 
     passport.use('register', new LocalStrategy({
-        passReqToCallback : true, usernameField: 'email'
-    }))
-    async(req,username,password,done) => {
-        try{
-
-            let data = req.body
-            let user = await UserModel.findOne({email:username})
-            if(user){
-                console.log('usuario registrado')
-                done(null,false)
+        passReqToCallback: true,
+        usernameField: 'email'
+    }, async (req, username, password, done) => {
+        let data = req.body
+        console.log(data)
+        try {
+            let user = await UserModel.findOne({ email: username })
+            if (user) {
+                console.log(' el usuario ya esta registrado')
+                return done(null, false)
             }
             let newUser = {
-                name : data.name,
-                lastname: data.lastname,
+                firstName: data.firstName,   //esto debe coincidir con el nombre en el modelo, tal cual
+                lastName: data.lastName,
                 password: createHash(data.password),
-                email: data.lastname
+                email: data.email
             }
-            let result = UserModel.create(newUser)
-            done(null,result)
+            console.log('usuario creado')
+            let result = await UserModel.create(newUser)
+            return done(null, result)
         } catch (err) {
             console.log(err)
-            return(done('error  al crear usuario ' + err))
+            return done('error al crear usuario ' + err)
         }
-    }
+    }));
 
-    passport.serializeUser((user,done) => {
+    passport.serializeUser((user, done) => {
         done(null, user._id)
-    })
-    passport.deserializeUser(async (id,done) => {
-        let user = await userModel.findById(id)
-        done(null,user)
-    })
-}
+    });
 
-module.exports = initializePassport
+    passport.deserializeUser(async (id, done) => {
+        try {
+            let user = await UserModel.findById(id);
+            done(null, user);
+        } catch (err) {
+            console.log(err);
+            done(err, null);
+        }
+    });
+};
+
+module.exports = initializePassport;
 
 
 
