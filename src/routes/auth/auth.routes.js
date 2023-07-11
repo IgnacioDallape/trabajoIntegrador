@@ -40,10 +40,10 @@ router.post('/login', async (req,res) => {
             res.send('usuario no existe')
         }
         console.log(user.password)
-        // let passwordVerification = isValidPassword(user, body.password)
-        // console.log(passwordVerification)
-        // console.log('ingreso exitoso')
-        // res.redirect('/product')
+        let passwordVerification = isValidPassword(user, body.password)
+        console.log(passwordVerification)
+        console.log('ingreso exitoso')
+        res.redirect('/product')
 
     } catch (err) {
         console.log(err)
