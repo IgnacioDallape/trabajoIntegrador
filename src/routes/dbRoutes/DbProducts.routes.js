@@ -2,7 +2,7 @@ const express = require('express')
 const { Router } = express
 const router = new Router()
 const bodyParser = require('body-parser');
-const dbManager = require('../dao/mongoDb/ProductManagerMDb')
+const dbManager = require('../../dao/mongoDb/ProductManagerMDb')
 const dbProducts = new dbManager()
 
 router.use(bodyParser.json());

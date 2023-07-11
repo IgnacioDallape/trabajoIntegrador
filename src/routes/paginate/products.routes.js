@@ -1,6 +1,6 @@
 const express = require('express')
-const UserModel = require('../dao/models/UserModel')
-const ProductManagerMDb = require('../dao/mongoDb/ProductManagerMDb')
+const UserModel = require('../../dao/models/UserModel')
+const ProductManagerMDb = require('../../dao/mongoDb/ProductManagerMDb')
 const prodMan = new ProductManagerMDb()
 const { Router } = express
 const router = new Router()

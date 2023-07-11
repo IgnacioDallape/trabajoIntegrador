@@ -2,8 +2,8 @@ const express = require('express')
 const { Router } = express
 const router = new Router()
 const bodyParser = require('body-parser');
-const cartManagerDb = require('../dao/mongoDb/CartManagerMongodb');
-const Cart = require('../dao/models/Cart');
+const cartManagerDb = require('../../dao/mongoDb/CartManagerMongodb');
+const Cart = require('../../dao/models/Cart');
 const mongoose = require('mongoose');
 const cartMan = new cartManagerDb()
 

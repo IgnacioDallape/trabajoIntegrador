@@ -1,7 +1,7 @@
 const express = require('express')
 const { Router } = express
 const router = new Router()
-const ProductManagerMDb = require('../dao/mongoDb/ProductManagerMDb')
+const ProductManagerMDb = require('../../dao/mongoDb/ProductManagerMDb')
 const prodMan = new ProductManagerMDb()
 
 router.get('/', async (req, res) => {

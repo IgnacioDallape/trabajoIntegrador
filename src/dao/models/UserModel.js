@@ -24,12 +24,10 @@ const schema = new Schema({
     },
     grade: {
         type: Number,
-        required: true,
 
     },
     group: {
         type: String,
-        required: true,
         max: 100,
     }
 });

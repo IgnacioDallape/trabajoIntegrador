@@ -9,13 +9,13 @@ const routerProduct = require('./dao/fileSystem/api/productManager/products.rout
 const routerCart = require('./dao/fileSystem/api/cartManager/cart.routes')
 const routerIndex = require('./routes/index.view')
 const routerHome = require('./routes/home.view')
-const routerMongoDbProducts = require('./routes/DbProducts.routes')
-const routerChat = require('./routes/chat.view')
+const routerMongoDbProducts = require('./routes/dbRoutes/DbProducts.routes')
+const routerChat = require('./routes/chat/chat.view')
 const realTimeRouter = require('./routes/realtime.view')
-const paginateRouter = require('./routes/products.view')
+const paginateRouter = require('./routes/paginate/products.view')
 const ChatManager = require('./dao/mongoDb/ChatManagerDb')
-const cartRouterMDb = require('./routes/DbCart.routes')
-const routerPaginate = require('./routes/products.routes')
+const cartRouterMDb = require('./routes/dbRoutes/DbCart.routes')
+const routerPaginate = require('./routes/paginate/products.routes')
 
 // routes
 
