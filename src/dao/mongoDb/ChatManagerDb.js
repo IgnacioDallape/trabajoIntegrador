@@ -1,4 +1,3 @@
-const fs = require('fs')
 const Chat = require('../models/Chat')
 
 class ChatManager{

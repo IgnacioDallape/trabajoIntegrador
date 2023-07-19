@@ -5,6 +5,8 @@ app.use(express.urlencoded( {extended: true} ))
 
 const PORT = 8080
 const Database = require('./dao/db')
+
+
 const routerProduct = require('./dao/fileSystem/api/productManager/products.routes')
 const routerCart = require('./dao/fileSystem/api/cartManager/cart.routes')
 const routerIndex = require('./routes/index.view')
@@ -41,6 +43,7 @@ app.use(session({
 //passport
 
 const passport = require('passport')
+const github = require('./config/github.config.js')
 
 initializePassport()
 app.use(passport.initialize()) 

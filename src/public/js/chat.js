@@ -16,7 +16,6 @@ const render = (data) => {
             <span>
             <strong> ${e.userMail}  </strong>
             <em> ${e.message} </em>        
-
             </span>
         </div>
         `
