@@ -61,6 +61,8 @@ router.post('/login', async (req,res) => {
 
 router.get('/github', passport.authenticate('github', { scope: ['user:email'], session: false }));
 router.get('/github/callback', passport.authenticate('github', { scope: ['user:email'], session: false }), function (req, res) {
+    req.session.userName = req.session.user.displayName
+    console.log(req.session.user.username)
     res.redirect('/product');
 });
 
