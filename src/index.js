@@ -23,6 +23,7 @@ const viewRouter = require('./routes/auth/view.routes')
 const initializePassport = require('./config/passport')
 const registerRouter = require('./routes/register.view')
 const loginRouter = require('./routes/login.view')
+const profileRouter = require('./routes/profile.view')
 
 //session
 const session = require('express-session')
@@ -65,6 +66,7 @@ app.use('/register', registerRouter)
 app.use('/login', loginRouter)
 app.use('/auth', authRouter)
 app.use('/view', viewRouter)
+app.use('/profile', profileRouter)
 
 
 // static

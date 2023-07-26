@@ -47,13 +47,32 @@ router.post('/login', async (req,res) => {
             console.log('usuario o contraseña invalidos')
             res.send('usuario o contraseña invalidos')
         }
+        console.log(user)
+        req.session.email = user.email
+        req.session.userName = user.firstName;
         console.log('ingreso exitoso')
-        req.session.userName = req.user.firstName;
-        res.redirect('/product')
+        res.redirect('/profile')
         return user
 
     } catch (err) {
         console.log(err)
+        res.redirect('/login')
+    }
+})
+
+router.get('/logout', (req,res) => {
+    try {
+        req.session.destroy( (err) => {
+            if(err) {
+                res.status(401).send('no se pudo eliminar la sesion')
+                return false
+            }
+            console.log('sesion eliminada')
+            res.redirect('/login')
+        })
+    } catch (error) {
+        console.log(err)
+        res.status(500).send('no pudo eliminarse la sesion')
     }
 })
 
