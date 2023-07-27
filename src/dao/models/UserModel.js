@@ -19,20 +19,20 @@ const schema = new Schema({
         max: 100,
         unique: true,
     },
+    age: {
+        type: Number,
+    },
     password: {
         type: String,
         required: true,
     },
-    gender: {
-        type: String,
-    },
-    grade: {
+    cart: {
         type: Number,
-
+        required: true
     },
-    group: {
+    role: {
         type: String,
-        max: 100,
+        default: 'user'
     }
 });
 schema.plugin(mongoosePaginate);

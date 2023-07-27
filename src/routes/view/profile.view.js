@@ -3,8 +3,8 @@ const router = express.Router();
 
 
 function auth(req,res,next){
-    let sessionEmail = req.session.email
-    if(!sessionEmail){
+    let sessionUsername = req.session.userName
+    if(!sessionUsername){
         res.redirect('/login')
     }
     next()

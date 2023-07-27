@@ -1,9 +1,9 @@
 const express = require('express')
 const { Router } = express
 const router = new Router()
-const { createHash, isValidPassword } = require('../../utils/bscrypt')
+const { createHash, isValidPassword } = require('../../../utils/bscrypt')
 const passport = require('passport')
-const UserModel = require('../../dao/models/UserModel')
+const UserModel = require('../../../dao/models/UserModel')
 
 router.get('/', (req, res) => {
     res.send('auth')
@@ -80,9 +80,9 @@ router.get('/logout', (req,res) => {
 
 router.get('/github', passport.authenticate('github', { scope: ['user:email'], session: false }));
 router.get('/github/callback', passport.authenticate('github', { scope: ['user:email'], session: false }), function (req, res) {
-    req.session.userName = req.session.user.displayName
-    console.log(req.session.user.username)
-    res.redirect('/product');
+    req.session.userName = req.user.displayName
+    console.log(req.session.username)
+    res.redirect('/profile');
 });
 
 

@@ -9,21 +9,20 @@ const Database = require('./dao/db')
 
 const routerProduct = require('./dao/fileSystem/api/productManager/products.routes')
 const routerCart = require('./dao/fileSystem/api/cartManager/cart.routes')
-const routerIndex = require('./routes/index.view')
-const routerHome = require('./routes/home.view')
-const routerMongoDbProducts = require('./routes/dbRoutes/DbProducts.routes')
-const routerChat = require('./routes/chat/chat.view')
-const realTimeRouter = require('./routes/realtime.view')
-const paginateRouter = require('./routes/paginate/products.view')
+const routerIndex = require('./routes/view/index.view')
+const routerHome = require('./routes/view/home.view')
+const routerMongoDbProducts = require('./routes/routers/dbRoutes/DbProducts.routes')
+const routerChat = require('./routes/view/chat.view')
+const realTimeRouter = require('./routes/view/realtime.view')
+const paginateRouter = require('./routes/view/products.view')
 const ChatManager = require('./dao/mongoDb/ChatManagerDb')
-const cartRouterMDb = require('./routes/dbRoutes/DbCart.routes')
-const routerPaginate = require('./routes/paginate/products.routes')
-const authRouter = require('./routes/auth/auth.routes')
-const viewRouter = require('./routes/auth/view.routes')
+const cartRouterMDb = require('./routes/routers/dbRoutes/DbCart.routes')
+const routerPaginate = require('./routes/routers/paginate/products.routes')
+const authRouter = require('./routes/routers/auth/auth.routes')
 const initializePassport = require('./config/passport')
-const registerRouter = require('./routes/register.view')
-const loginRouter = require('./routes/login.view')
-const profileRouter = require('./routes/profile.view')
+const registerRouter = require('./routes/view/register.view')
+const loginRouter = require('./routes/view/login.view')
+const profileRouter = require('./routes/view/profile.view')
 
 //session
 const session = require('express-session')
@@ -65,7 +64,6 @@ app.use('/products', routerPaginate)
 app.use('/register', registerRouter)
 app.use('/login', loginRouter)
 app.use('/auth', authRouter)
-app.use('/view', viewRouter)
 app.use('/profile', profileRouter)
 
 
@@ -90,14 +88,6 @@ const io = new Server(server)
 
 
 
-app.get('/', (req, res) => {
-    res.send('Bienvenido!')
-})
-
-server.listen(PORT, () => {
-    console.log('corriendo en el puerto: ', PORT)
-    Database.connect()
-})
 
 //io
 
@@ -109,11 +99,11 @@ const newMongoProd = new dbManager()
 
 
 io.on('connection', async (socket) => {
-
+    
     try {
-
+        
         //realtime
-
+        
         let prodMongo = await newMongoProd.getProducts()
         socket.emit('products', prodMongo)
         socket.emit('products', prodMongo)
@@ -123,9 +113,9 @@ io.on('connection', async (socket) => {
         socket.on('updateProducts', async () => {
             await emitProducts()
         })
-
+        
         //chat
-
+        
         socket.on('chat', async (data) => {
             try {
                 let chat = new ChatManager
@@ -147,9 +137,9 @@ io.on('connection', async (socket) => {
                 return false
             }
         })
-
+        
         //paginate
-
+        
         socket.on('page', async (data) => {
             try {
                 let { limit, page, category, sort } = data
@@ -160,7 +150,7 @@ io.on('connection', async (socket) => {
                 console.log(err)
             }
         });
-
+        
         socket.on('nextPage', async (data) => {
             try {
                 console.log(data, 22)
@@ -181,10 +171,21 @@ io.on('connection', async (socket) => {
         })
         
         socket.emit('paginate', prodMongo);
-
-
+        
+        
     } catch (err) {
         console.log(err)
     }
 })
 
+
+
+
+app.get('/', (req, res) => {
+    res.send('Bienvenido!')
+})
+
+server.listen(PORT, () => {
+    console.log('corriendo en el puerto: ', PORT)
+    Database.connect()
+})
