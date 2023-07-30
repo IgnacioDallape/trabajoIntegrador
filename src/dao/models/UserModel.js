@@ -1,8 +1,10 @@
 //@ts-check
 const { Schema, model } = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2')
+const CartManager = require('../mongoDb/CartManagerMongodb')
+const CM = new CartManager()
 
-const schema = new Schema({
+const schema = new Schema( {
     firstName: {
         type: String,
         required: true,
@@ -21,13 +23,14 @@ const schema = new Schema({
     },
     age: {
         type: Number,
+        required: true
     },
     password: {
         type: String,
         required: true,
     },
     cart: {
-        type: Number,
+        type: String,
         required: true
     },
     role: {
@@ -36,4 +39,5 @@ const schema = new Schema({
     }
 });
 schema.plugin(mongoosePaginate);
+
 module.exports = model('users', schema);

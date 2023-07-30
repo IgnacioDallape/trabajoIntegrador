@@ -7,12 +7,14 @@ function auth(req,res,next){
     if(!sessionUsername){
         res.redirect('/login')
     }
+    console.log(sessionUsername,22)
     next()
 }
 
 router.get('/', auth, async (req, res) => {
     try {
-        res.render('profile', {})
+        let name = req.session.userName
+        res.render('profile', { name })
     } catch (err) {
         console.log(err)
     }

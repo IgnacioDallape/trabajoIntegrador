@@ -10,8 +10,8 @@ class CartManagerMDb {
     }
     async addCart() {
         try {
-            Cart.create({})
-            return true
+            let a = Cart.create({})
+            return a
         } catch (err) {
             console.log(err, 'error en addCartM')
             return false

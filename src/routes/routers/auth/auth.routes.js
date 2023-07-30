@@ -39,8 +39,6 @@ router.post('/login', async (req,res) => {
         }
         if(body.email == 'adminCoder@coder.com'){
             user.role = 'admin'
-        } else {
-            user.role = 'usuario'
         }
         let passwordVerification = isValidPassword(user, body.password)
         if(!passwordVerification){

@@ -2,6 +2,9 @@ const passport = require("passport")
 const LocalStrategy = require('passport-local').Strategy
 const UserModel = require('../dao/models/UserModel')
 const { createHash, isValidPassword } = require('../utils/bscrypt')
+const CartManager = require('../dao/mongoDb/CartManagerMongodb')
+const CM = new CartManager()
+
 const initializePassport = () => {
 
     passport.use('register', new LocalStrategy({
@@ -16,11 +19,19 @@ const initializePassport = () => {
                 console.log(' el usuario ya esta registrado')
                 return done(null, false)
             }
+            let cart = await CM.addCart()
+            if (!cart) {
+                console.log('error creando el carrito en passport')
+                return false
+            }
             let newUser = {
                 firstName: data.firstName,   //esto debe coincidir con el nombre en el modelo, tal cual
                 lastName: data.lastName,
+                cart: cart,
+                age: data.age,
                 password: createHash(data.password),
-                email: data.email
+                email: data.email,
+
             }
             console.log('usuario creado')
             let result = await UserModel.create(newUser)
