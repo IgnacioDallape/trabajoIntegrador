@@ -14,7 +14,9 @@ function auth(req,res,next){
 router.get('/', auth, async (req, res) => {
     try {
         let name = req.session.userName
-        res.render('profile', { name })
+        let role = req.session.role
+        console.log(req.session)
+        res.render('profile', { name, role })
     } catch (err) {
         console.log(err)
     }

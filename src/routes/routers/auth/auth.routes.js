@@ -48,6 +48,7 @@ router.post('/login', async (req,res) => {
         console.log(user)
         req.session.email = user.email
         req.session.userName = user.firstName;
+        req.session.role = user.role
         console.log('ingreso exitoso')
         res.redirect('/profile')
         return user
