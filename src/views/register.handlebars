@@ -1,40 +1,42 @@
 <head>
     <title>{{title}}</title>
 </head>
-<div class="container d-flex align-items-center flex-column">
-    <header>
-        <h1>Register</h1>
+<div class="background register__padding">
+    <header class="container d-flex align-items-center flex-column pb-3 ">
+        <h1 class="header__register">Register</h1>
     </header>
-    <main>
-        <div class="container">
-            <form action="/auth/register" method="post">
-                <div class="form-group">
-                    <label for="firstName">Nombre</label>
-                    <input type="text" class="form-control" name="firstName" id="firstName" required>
+    <div class="container d-flex align-items-center flex-column">
+        <main>
+            <div class="container register__main">
+                <form action="/auth/register" method="post">
+                    <div class="form-group d-flex justify-conmtent-center align-items-center flex-column">
+                        <label for="firstName">Nombre</label>
+                        <input type="text" class="form-control" name="firstName" id="firstName" required>
+                    </div>
+                    <div class="form-group d-flex justify-conmtent-center align-items-center flex-column">
+                        <label for="lastName">Apellido</label>
+                        <input type="text" class="form-control" name="lastName" id="lastName" required>
+                    </div>
+                    <div class="form-group d-flex justify-conmtent-center align-items-center flex-column">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" name="email" id="email" required>
+                    </div>
+                    <div class="form-group d-flex justify-conmtent-center align-items-center flex-column">
+                        <label for="age">Edad</label>
+                        <input type="number" class="form-control" name="age" id="age" required>
+                    </div>
+                    <div class="form-group d-flex justify-conmtent-center align-items-center flex-column">
+                        <label for="password">Contraseña</label>
+                        <input type="password" class="form-control" name="password" id="password" required>
+                    </div>
+                    <div class=" pt-3 d-flex justify-conmtent-center align-items-center flex-column">
+                        <button type="submit" class="btn btn-primary main__button">Registrarme</button>
+                    </div>
+                </form>
+                <div class=" pt-3 d-flex justify-conmtent-center align-items-center flex-column">
+                    <a href="/login"><button class="btn btn-primary main__button">Volver a Login</button></a>
                 </div>
-                <div class="form-group">
-                    <label for="lastName">Apellido</label>
-                    <input type="text" class="form-control" name="lastName" id="lastName" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" name="email" id="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="age">Edad</label>
-                    <input type="number" class="form-control" name="age" id="age" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Contraseña</label>
-                    <input type="password" class="form-control" name="password" id="password" required>
-                </div>
-                <div class=" pt-3">
-                    <button type="submit" class="btn btn-primary ">Registrarme</button>
-                </div>
-            </form>
-            <div class=" pt-3">
-                <a href="/login"><button class="btn btn-primary">Volver a Login</button></a>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 </div>
