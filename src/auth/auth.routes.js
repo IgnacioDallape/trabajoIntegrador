@@ -1,9 +1,9 @@
 const express = require('express')
 const { Router } = express
 const router = new Router()
-const { createHash, isValidPassword } = require('../../../utils/bscrypt')
+const { createHash, isValidPassword } = require('../utils/bscrypt')
 const passport = require('passport')
-const UserModel = require('../../../dao/models/UserModel')
+const UserModel = require('../dao/models/UserModel')
 
 router.get('/', (req, res) => {
     res.send('auth')
@@ -45,7 +45,6 @@ router.post('/login', async (req,res) => {
             console.log('usuario o contraseña invalidos')
             res.send('usuario o contraseña invalidos')
         }
-        console.log(user)
         req.session.email = user.email
         req.session.userName = user.firstName;
         req.session.role = user.role
@@ -80,7 +79,7 @@ router.get('/logout', (req,res) => {
 router.get('/github', passport.authenticate('github', { scope: ['user:email'], session: false }));
 router.get('/github/callback', passport.authenticate('github', { scope: ['user:email'], session: false }), function (req, res) {
     req.session.userName = req.user.displayName
-    console.log(req.session.username)
+    req.session.role = 'user'
     res.redirect('/profile');
 });
 
