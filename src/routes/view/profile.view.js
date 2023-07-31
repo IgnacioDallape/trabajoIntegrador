@@ -16,7 +16,7 @@ router.get('/', auth, async (req, res) => {
         let name = req.session.userName
         let role = req.session.role
         console.log(req.session)
-        res.render('profile', { name, role })
+        res.render('profile', { name, role, title: 'Perfil' })
     } catch (err) {
         console.log(err)
     }

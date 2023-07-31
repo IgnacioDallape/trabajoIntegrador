@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
             links.push({label:i, href:'/product/?page=' + i})
         }
 
-        return res.status(200).render('products', {productos, pagination: rest, links, username  })
+        return res.status(200).render('products', {productos, pagination: rest, links, username, title: 'Productos'  })
     } catch (err) {
         console.log(err)
         res.send(err)

@@ -9,7 +9,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get('/', async (req, res) => {
     try {
-        res.render('register', {})
+        res.render('register', { title: 'Registro'})
     } catch (err) {
         console.log(err)
     }

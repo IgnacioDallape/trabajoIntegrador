@@ -8,7 +8,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get('/', (req,res) => {
     try{
-        res.render('home', {})
+        res.render('home', { title: 'Home'})
     } catch (err) {
         console.log(err)
         res.status(500).send(err)

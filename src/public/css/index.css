@@ -1,4 +1,4 @@
-.header{
+.header {
     display: flex;
     justify-content: space-evenly;
     padding-top: 2rem;
@@ -6,21 +6,22 @@
     background-color: bisque;
 }
 
-.back{
+.back {
     background-color: grey;
 }
 
-.header__letter{
-    color: #00b6ff;;
+.header__letter {
+    color: #00b6ff;
+    ;
 }
 
-.center{
+.center {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.box{
+.box {
     border: 1px black solid;
 }
 
@@ -30,6 +31,7 @@
     color: #52C11F;
     border-color: #52C11F;
 }
+
 .iota .btn {
     display: inline-block;
     margin: 4px;
@@ -51,6 +53,41 @@
     transition: background-color 0.3s, color 0.3s;
 }
 
-.btn-login{
+.btn-login {
     width: 100%;
+}
+
+/* LOGIN */
+.background{
+    background-image: url('https://images.unsplash.com/photo-1554120013-4ba50c1a1788?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+}
+
+.login__padding{
+    padding-bottom: 25rem;
+    padding-top: 5rem;
+}
+
+.header__login{
+    border: 0.5px solid black;
+    padding: 4rem;
+    background-color:  #ededed;
+    border-radius: 0.4rem;
+}
+
+.main__login {
+    border: 1px solid black;
+    padding: 4rem;
+    background-color: #ededed;
+    border-radius: 3rem;
+}
+
+.main__button {
+    transition: transform 0.3s ease-out; 
+}
+
+.main__button:hover{
+    transform: scale(1.1);
 }
