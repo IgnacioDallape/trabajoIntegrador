@@ -57,21 +57,6 @@ router.post('/addProducts', async (req, res, next) => {
     }
 })
 
-// router.delete('/delete/carts/:cid/products/:pid', async (req,res) => {
-//     try{
-//         let cid = req.params.cid
-//         let pid = req.params.pid
-//         let dbman = new dbManager()
-//         let deleting  = dbman.deleteCartProducts(cid,pid)
-//         console.log(deleting)
-//         res.status(200).send('producto eliminado: ', deleting)
-
-//     } catch (err) {
-//         console.log(err)
-//         res.status(500).send('error en router delete')
-//     }
-// })
-
 router.get('/getProducts/:pid', async (req,res) => {
     let pid = req.params.pid
     let productById = await dbProducts.getProductsById(pid)

@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 app.use(express.json())
-app.use(express.urlencoded( {extended: true} ))
+app.use(express.urlencoded({ extended: true }))
 
 const PORT = 8080
 const Database = require('./dao/db')
@@ -33,11 +33,17 @@ let password = process.env.PASSWORD
 
 app.use(session({
     store: MongoStore.create({
-        mongoUrl:`mongodb+srv://nachoIntegrador:${password}@integradordallape.knrlzeo.mongodb.net/integradorDallape`
-    }) ,
-    secret:'secret',
-    resave:true,
-    saveUninitialized:true
+        mongoUrl: `mongodb+srv://nachoIntegrador:${password}@integradordallape.knrlzeo.mongodb.net/integradorDallape`,
+        ttl: 1800,
+        autoRemove: 'native',
+    }),
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 1800000, 
+        httpOnly: true,
+    },
 }))
 
 //passport
@@ -46,7 +52,7 @@ const passport = require('passport')
 const github = require('./config/github.config.js')
 
 initializePassport()
-app.use(passport.initialize()) 
+app.use(passport.initialize())
 app.use(passport.session({}))
 
 // routes
@@ -99,11 +105,11 @@ const newMongoProd = new dbManager()
 
 
 io.on('connection', async (socket) => {
-    
+
     try {
-        
+
         //realtime
-        
+
         let prodMongo = await newMongoProd.getProducts()
         socket.emit('products', prodMongo)
         socket.emit('products', prodMongo)
@@ -113,9 +119,9 @@ io.on('connection', async (socket) => {
         socket.on('updateProducts', async () => {
             await emitProducts()
         })
-        
+
         //chat
-        
+
         socket.on('chat', async (data) => {
             try {
                 let chat = new ChatManager
@@ -137,9 +143,9 @@ io.on('connection', async (socket) => {
                 return false
             }
         })
-        
+
         //paginate
-        
+
         socket.on('page', async (data) => {
             try {
                 let { limit, page, category, sort } = data
@@ -150,7 +156,7 @@ io.on('connection', async (socket) => {
                 console.log(err)
             }
         });
-        
+
         socket.on('nextPage', async (data) => {
             try {
                 console.log(data, 22)
@@ -169,10 +175,10 @@ io.on('connection', async (socket) => {
                 console.log(err)
             }
         })
-        
+
         socket.emit('paginate', prodMongo);
-        
-        
+
+
     } catch (err) {
         console.log(err)
     }

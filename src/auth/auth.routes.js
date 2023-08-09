@@ -35,7 +35,8 @@ router.post('/login', async (req,res) => {
         let user = await UserModel.findOne( { email: body.email } )
         if(!user){
             console.log('usuario o contraseña invalidos')
-            res.send('usuario o contraseña invalidos')
+            res.redirect('/login')
+            return
         }
         if(body.email == 'adminCoder@coder.com'){
             user.role = 'admin'
@@ -43,7 +44,8 @@ router.post('/login', async (req,res) => {
         let passwordVerification = isValidPassword(user, body.password)
         if(!passwordVerification){
             console.log('usuario o contraseña invalidos')
-            res.send('usuario o contraseña invalidos')
+            res.redirect('/login')
+            return
         }
         req.session.email = user.email
         req.session.userName = user.firstName;
@@ -78,6 +80,7 @@ router.get('/logout', (req,res) => {
 
 router.get('/github', passport.authenticate('github', { scope: ['user:email'], session: false }));
 router.get('/github/callback', passport.authenticate('github', { scope: ['user:email'], session: false }), function (req, res) {
+    console.log(req.user,2323)
     req.session.userName = req.user.displayName
     req.session.role = 'user'
     res.redirect('/profile');
