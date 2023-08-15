@@ -1,39 +1,13 @@
-import express from 'express';
 import { Router } from 'express';
-import bodyParser from 'body-parser';
-import ChatdbManager from '../../../dao/mongoDb/ChatManagerDb.js';
+import { getMessage, addMessage, deleteAllMessages} from '../../../dao/controllers/chat.controller';
 
 const router = new Router();
-const dbProducts = new ChatdbManager();
 
 
-router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: true }));
+router.get('/', getMessage)
 
-router.get('/', async (req,res) => {
-    try{
-        let messages = await dbProducts.getMessage()
-        res.status(200).send(messages)
-        console.log(messages)
-        console.log('mensajes obtenidos')
-        return
-    } catch (err) {
-        console.log('error en router de getMessage chat')
-        res.status(500).send(err)
-    }
-})
+router.post('/', addMessage)
 
-router.post('/', async (req,res) => {
-    try{
-        let messages = await dbProducts.getMessage()
-        res.status(200).send(messages)
-        console.log(messages)
-        console.log('mensajes obtenidos')
-        return
-    } catch (err) {
-        console.log('error en router de getMessage chat')
-        res.status(500).send(err)
-    }
-})
+router.delete('/deleteChat', deleteAllMessages)
 
 export { router }

@@ -72,7 +72,6 @@ class CartManagerMDb {
     async deleteProducts(cid) {
         try {
             let cart = await this.getCartsById(cid)
-            console.log(cart)
             if (!cart) {
                 console.log(`no se encontro cart con id ${cid}`)
                 return false
@@ -104,14 +103,16 @@ class CartManagerMDb {
                 return false
             }
             const cartUpd = await Cart.updateOne(
+                { _id: cart._id },
                 {
-                    $pull: { products: { product: pid } }
+                    $pull: { products: { _id: prod._id } }
                 }
-            )
+            );
             if (!cartUpd) {
                 console.log(`error al eliminar el producto con id ${pid} del carrito en deleteProductsByIdM`)
                 return false
             }
+            console.log('producto eliminado')
             return true
         } catch (err) {
             console.log(err, 'error en deleteProductsById')

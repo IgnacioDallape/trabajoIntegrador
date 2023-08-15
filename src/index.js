@@ -76,20 +76,23 @@ app.use("/auth", authRouter);
 app.use("/profile", profileRouter);
 
 // static
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+const __filename = fileURLToPath(import.meta.url);
 
-app.use(express.static(path.join(path.dirname(new URL(import.meta.url).pathname), 'public')));
+app.use(express.static(join(dirname(__filename), 'public')));
 
 // handlebars
 
 import handlebars from 'express-handlebars';
 
-app.engine('handlebars', handlebars.create({ extname: '.hbs' }).engine);
-app.set('views', path.join(path.dirname(new URL(import.meta.url).pathname), 'views'));
+app.engine('handlebars', handlebars.engine());
+app.set('views', join(dirname(__filename), 'views'));
 app.set('view engine', 'handlebars');
 
 //socket
 
-import http from 'http';
+import http, { get } from 'http';
 import { Server } from 'socket.io';
 const server = http.createServer(app);
 const io = new Server(server);
@@ -99,6 +102,7 @@ const io = new Server(server);
 let messages = [];
 import dbManager from './dao/mongoDb/ProductManagerMDb.js';
 const newMongoProd = new dbManager();
+let chat = new ChatManager();
 
 io.on('connection', async (socket) => {
   try {
@@ -118,7 +122,6 @@ io.on('connection', async (socket) => {
 
     socket.on('chat', async (data) => {
       try {
-        let chat = new ChatManager();
         console.log(data);
         let adding = await chat.addMessage(data);
         if (!adding) {
@@ -137,6 +140,21 @@ io.on('connection', async (socket) => {
         return false;
       }
     });
+
+    socket.on('deletingMessages', async () => {
+        try {
+          const deleting = await chat.deleteAllMessages()
+          console.log(deleting,1234)
+          if(!deleting) return false
+          const getMessages = await chat.getMessage()
+          console.log(getMessages,123)
+          if(!getMessages) return false
+          io.sockets.emit('chat', getMessages)
+        } catch (error) {
+          console.log(err, 'error en socket en index / chat');
+          return false;
+        }
+    })
 
     //paginate
 

@@ -34,11 +34,11 @@
 
     <div class="d-flex justify-content-center align-items-center ">
         {{#if pagination.hasPrevPage}}
-        <a style='font-size: 20;' href='/product/?page={{pagination.prevPage}}' class="btn ">⬅{{pagination.prevPage}}</a>
+        <a style='font-size: 20;' href='/products/?page={{pagination.prevPage}}' class="btn ">⬅{{pagination.prevPage}}</a>
         {{/if}}
         <a style='font-size: 20;' href='#' class="btn ">{{pagination.page}}</a>
         {{#if pagination.hasNextPage}}
-        <a style='font-size: 20;' href='/product/?page={{pagination.nextPage}}'
+        <a style='font-size: 20;' href='/products/?page={{pagination.nextPage}}'
             class="btn ">{{pagination.nextPage}}➡</a>
         {{/if}}
 

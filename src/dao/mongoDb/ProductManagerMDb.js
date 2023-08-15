@@ -1,6 +1,4 @@
-import fs from 'fs';
 import Product from '../models/Product.js';
-import mongoose from 'mongoose';
 
 class ProductManagerMDb {
 

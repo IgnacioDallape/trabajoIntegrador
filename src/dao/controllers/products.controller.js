@@ -1,13 +1,10 @@
+import { getProductsService, getProductsByIdService, addProductsService, deleteProductsService } from "../services/products.service.js";
+
+
+
 const getProducts = async (req, res) => {
   try {
-    const options = {
-      limit: req.query.limit,
-      page: req.query.page,
-      category: req.query.category,
-      sort: req.query.sort,
-    };
-    console.log(options);
-    let getDbProducts = await dbProducts.getProducts(options);
+    let getDbProducts = await getProductsService(req);
     if (!getDbProducts) {
       console.log("error en router de getproducts db");
       res.status(500).send(err);
@@ -19,7 +16,6 @@ const getProducts = async (req, res) => {
       msg: "estos son los productos en db!",
       pr: getDbProducts,
     });
-    next();
   } catch (err) {
     console.log("error en router de getproducts db");
     res.status(500).send(err);
@@ -28,8 +24,7 @@ const getProducts = async (req, res) => {
 
 const addProducts = async (req, res) => {
   try {
-    let prod = req.body;
-    let addDbProducts = await dbProducts.addProducts(prod);
+    let addDbProducts = await addProductsService(req);
     console.log(addDbProducts, 222);
     if (!addDbProducts) {
       console.log("error en router de addProducts db");
@@ -40,7 +35,6 @@ const addProducts = async (req, res) => {
       msg: "estos son los productos!",
       pr: addDbProducts,
     });
-    next();
   } catch (err) {
     console.log("error en router de saveProducts db");
     res.status(500).send(err);
@@ -49,8 +43,7 @@ const addProducts = async (req, res) => {
 
 const getProductsById = async (req, res) => {
   try {
-    let pid = req.params.pid;
-    let productById = await dbProducts.getProductsById(pid);
+    let productById = await getProductsByIdService(req);
     console.log(productById);
     if (!productById) {
       console.log(`no existe el producto con id ${pid}`);
@@ -67,9 +60,11 @@ const getProductsById = async (req, res) => {
 
 const deleteProducts = async (req, res) => {
   try {
-    let pid = req.params.pid;
-    let dbman = new dbManager();
-    let deleting = await dbman.deleteProducts(pid);
+    let deleting = await deleteProductsService(req);
+    if(!deleting){
+      res.status(500).send("error en router delete", 2121);
+      return false
+    }
     res.status(200).send("producto eliminado: " + JSON.stringify(deleting));
   } catch (err) {
     console.log(err);
@@ -77,4 +72,7 @@ const deleteProducts = async (req, res) => {
   }
 };
 
+export {
+  getProducts, getProductsById, addProducts, deleteProducts
+}
 

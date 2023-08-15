@@ -10,6 +10,7 @@ router.get('/', async (req, res) => {
     try {
         const username = req.session.userName;
         let { page, limit } = req.query
+
         let prod = await prodMan.getProducts(page, limit)
         if(!prod) {
             console.log('error en products.view')
@@ -24,7 +25,7 @@ router.get('/', async (req, res) => {
         let links = []
 
         for(let i = 1; i < rest.totalPages + 1; i++){
-            links.push({label:i, href:'/product/?page=' + i})
+            links.push({label:i, href:'/products/?page=' + i})
         }
 
         return res.status(200).render('products', {productos, pagination: rest, links, username, title: 'Productos'  })

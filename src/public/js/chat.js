@@ -38,3 +38,9 @@ const addMessage = () => {
     console.log(mensaje)
     return false
 }
+
+function deletingMessages(){
+    socket.emit('deletingMessages')
+}
+
+document.getElementById('deleteMessagesBtn').addEventListener('click', deletingMessages)

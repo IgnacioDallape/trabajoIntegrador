@@ -1,88 +1,15 @@
 import express from 'express';
-import bodyParser from 'body-parser';
-import ProductManagerMDb from '../../../dao/mongoDb/ProductManagerMDb.js';
-
+import { getProducts, getProductsById, deleteProducts, addProducts } from '../../../dao/controllers/products.controller.js';
 const { Router } = express;
 const router = new Router();
-const dbProducts = new ProductManagerMDb();
 
-router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: true }));
+router.get('/getProducts', getProducts)
 
-router.get('/getProducts', async (req, res, next) => {
-    try {
-        const options = {
-                limit : req.query.limit,
-                page : req.query.page,
-                category : req.query.category,
-                sort: req.query.sort
-        }
-        console.log(options)
-        let getDbProducts = await dbProducts.getProducts(options)
-        if (!getDbProducts) {
-            console.log('error en router de getproducts db')
-            res.status(500).send(err)
-            return
-        }
-        // let names = getDbProducts.map ( e => e.name)
+router.post('/addProducts', addProducts)
 
-        res.status(200).send({
-            msg: 'estos son los productos en db!',
-            pr: getDbProducts
-        })
-        next()
-    } catch (err) {
-        console.log('error en router de getproducts db')
-        res.status(500).send(err)
-    }
-})
+router.get('/getProducts/:pid', getProductsById)
 
-router.post('/addProducts', async (req, res, next) => {
-    try {
-        let prod = req.body
-        let addDbProducts = await dbProducts.addProducts(prod)
-        console.log(addDbProducts,222)
-        if (!addDbProducts) {
-            console.log('error en router de addProducts db')
-            res.status(500).send(err)
-            return
-        }
-        res.status(200).send({
-            msg: 'estos son los productos!',
-            pr: addDbProducts
-        })
-        next()
-    } catch (err) {
-        console.log('error en router de saveProducts db')
-        res.status(500).send(err)
-    }
-})
-
-router.get('/getProducts/:pid', async (req,res) => {
-    let pid = req.params.pid
-    let productById = await dbProducts.getProductsById(pid)
-    console.log(productById)
-    if(!productById){
-        console.log(`no existe el producto con id ${pid}`)
-        res.status(500).send('no existe el producto')
-        return false
-    }
-    res.status(200).send(`el producto es: ${productById}`)
-    console.log(productById)
-})
-
-router.delete('/delete/products/:pid', async (req,res) => {
-    try{
-        let pid = req.params.pid
-        let dbman = new dbManager()
-        let deleting  = await dbman.deleteProducts(pid)
-        res.status(200).send('producto eliminado: ' + JSON.stringify(deleting));
-
-    } catch (err) {
-        console.log(err)
-        res.status(500).send('error en router delete')
-    }
-})
+router.delete('/delete/products/:pid', deleteProducts)
 
 
 
