@@ -1,5 +1,5 @@
-const uuid4 = require("uuid4")
-const fs = require('fs')
+import { v4 as uuid4 } from 'uuid';
+import fs from 'fs';
 
 class ProductManager {
     constructor(){
@@ -137,4 +137,4 @@ class ProductManager {
 
 }
 
-module.exports = ProductManager
+export { ProductManager }

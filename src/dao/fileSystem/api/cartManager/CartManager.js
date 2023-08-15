@@ -1,7 +1,7 @@
-const fs = require('fs')
-const uuid4 = require('uuid4')
-const ProductManager = require('../productManager/ProductManager')
-let productManager = new ProductManager()
+import fs from 'fs';
+import { v4 as uuid4 } from 'uuid';
+import { ProductManager } from '../productManager/ProductManager.js';
+const productManager = new ProductManager();
 
 class CartManager {
     constructor() {
@@ -126,4 +126,4 @@ class CartManager {
 }
 
 
-module.exports = CartManager
+export { CartManager }

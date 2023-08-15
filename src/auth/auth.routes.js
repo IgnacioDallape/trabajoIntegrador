@@ -1,9 +1,10 @@
-const express = require('express')
-const { Router } = express
-const router = new Router()
-const { createHash, isValidPassword } = require('../utils/bscrypt')
-const passport = require('passport')
-const UserModel = require('../dao/models/UserModel')
+import express from 'express';
+import { Router } from 'express';
+const router = new Router();
+import { createHash, isValidPassword } from '../utils/bscrypt.js';
+import passport from 'passport';
+import UserModel from '../dao/models/UserModel.js';
+
 
 router.get('/', (req, res) => {
     res.send('auth')
@@ -87,4 +88,4 @@ router.get('/github/callback', passport.authenticate('github', { scope: ['user:e
 });
 
 
-module.exports = router
+export { router }

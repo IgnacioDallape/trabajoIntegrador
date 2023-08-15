@@ -1,8 +1,8 @@
-//@ts-check
-const { Schema, model } = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate-v2')
-const CartManager = require('../mongoDb/CartManagerMongodb')
-const CM = new CartManager()
+import { Schema, model } from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
+import CartManager from '../mongoDb/CartManagerMongodb.js';
+const CM = new CartManager();
+
 
 const schema = new Schema( {
     firstName: {
@@ -40,4 +40,4 @@ const schema = new Schema( {
 });
 schema.plugin(mongoosePaginate);
 
-module.exports = model('users', schema);
+export default model('users', schema);

@@ -1,10 +1,11 @@
-const express = require('express')
-const CartManager = require('./CartManager')
-const ProductManager = require('../productManager/ProductManager')
-const { Router } = express
-const router = new Router()
-const cartManager = new CartManager()
-const productManager = new ProductManager()
+import express from 'express';
+import { CartManager } from './CartManager.js';
+import { ProductManager } from '../productManager/ProductManager.js';
+const { Router } = express;
+const router = new Router();
+const cartManager = new CartManager();
+const productManager = new ProductManager();
+
 
 router.get('/', async (req, res) => {
     try{
@@ -85,4 +86,4 @@ router.post('/:cid/products/:pid', async (req,res) => {
     }
 })
 
-module.exports = router
+export { router }

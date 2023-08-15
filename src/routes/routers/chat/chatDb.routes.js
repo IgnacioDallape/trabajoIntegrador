@@ -1,9 +1,11 @@
-const express = require('express')
-const { Router } = express
-const router = new Router()
-const bodyParser = require('body-parser');
-const ChatdbManager = require('../../../dao/mongoDb/ChatManagerDb')
-const dbProducts = new ChatdbManager()
+import express from 'express';
+import { Router } from 'express';
+import bodyParser from 'body-parser';
+import ChatdbManager from '../../../dao/mongoDb/ChatManagerDb.js';
+
+const router = new Router();
+const dbProducts = new ChatdbManager();
+
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -33,3 +35,5 @@ router.post('/', async (req,res) => {
         res.status(500).send(err)
     }
 })
+
+export { router }

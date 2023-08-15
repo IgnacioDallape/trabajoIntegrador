@@ -1,197 +1,185 @@
-const express = require('express')
-const app = express()
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+import express from "express";
+import path from 'path';
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-const PORT = 8080
-const Database = require('./dao/db')
+const PORT = 8080;
 
+import Database from "./dao/db.js";
 
-const routerProduct = require('./dao/fileSystem/api/productManager/products.routes')
-const routerCart = require('./dao/fileSystem/api/cartManager/cart.routes')
-const routerIndex = require('./routes/view/index.view')
-const routerHome = require('./routes/view/home.view')
-const routerMongoDbProducts = require('./routes/routers/dbRoutes/DbProducts.routes')
-const routerChat = require('./routes/view/chat.view')
-const realTimeRouter = require('./routes/view/realtime.view')
-const paginateRouter = require('./routes/view/products.view')
-const ChatManager = require('./dao/mongoDb/ChatManagerDb')
-const cartRouterMDb = require('./routes/routers/dbRoutes/DbCart.routes')
-const routerPaginate = require('./routes/routers/paginate/products.routes')
-const authRouter = require('./auth/auth.routes')
-const initializePassport = require('./config/passport')
-const registerRouter = require('./routes/view/register.view')
-const loginRouter = require('./routes/view/login.view')
-const profileRouter = require('./routes/view/profile.view')
+import { router as routerProduct } from "./dao/fileSystem/api/productManager/products.routes.js";
+import { router as routerCart } from "./dao/fileSystem/api/cartManager/cart.routes.js";
+import { router as routerIndex } from "./routes/view/index.view.js";
+import { router as routerHome } from "./routes/view/home.view.js";
+import { router as routerMongoDbProducts } from "./routes/routers/dbRoutes/DbProducts.routes.js";
+import { router as routerChat } from "./routes/view/chat.view.js";
+import { router as realTimeRouter } from "./routes/view/realtime.view.js";
+import { router as paginateRouter } from "./routes/view/products.view.js";
+import { ChatManager } from "./dao/mongoDb/ChatManagerDb.js";
+import { router as cartRouterMDb } from "./routes/routers/dbRoutes/DbCart.routes.js";
+import { router as routerPaginate } from "./routes/routers/paginate/products.routes.js";
+import { router as authRouter } from "./auth/auth.routes.js";
+import { initializePassport } from "./config/passport.js";
+import { router as registerRouter } from "./routes/view/register.view.js";
+import { router as loginRouter } from "./routes/view/login.view.js";
+import { router as profileRouter } from "./routes/view/profile.view.js";
 
 //session
-const session = require('express-session')
-const MongoStore = require('connect-mongo')
-const dotenv = require('dotenv')
-dotenv.config()
-let password = process.env.PASSWORD
 
-app.use(session({
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import dotenv from "dotenv";
+dotenv.config();
+let password = process.env.PASSWORD;
+
+app.use(
+  session({
     store: MongoStore.create({
-        mongoUrl: `mongodb+srv://nachoIntegrador:${password}@integradordallape.knrlzeo.mongodb.net/integradorDallape`,
-        ttl: 1800,
-        autoRemove: 'native',
+      mongoUrl: `mongodb+srv://nachoIntegrador:${password}@integradordallape.knrlzeo.mongodb.net/integradorDallape`,
+      ttl: 1800,
+      autoRemove: "native",
     }),
-    secret: 'secret',
+    secret: "secret",
     resave: true,
     saveUninitialized: true,
     cookie: {
-        maxAge: 1800000, 
-        httpOnly: true,
+      maxAge: 1800000,
+      httpOnly: true,
     },
-}))
+  })
+);
 
 //passport
 
-const passport = require('passport')
-const github = require('./config/github.config.js')
+import passport from "passport";
 
-initializePassport()
-app.use(passport.initialize())
-app.use(passport.session({}))
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session({}));
 
 // routes
 
-app.use('/productsFs', routerProduct)
-app.use('/cartsFs', routerCart)
-app.use('/index', routerIndex)
-app.use('/home', routerHome)
-app.use('/chat', routerChat)
-app.use('/realtimeproducts', realTimeRouter)
-app.use('/products', paginateRouter)
-app.use('/mongoProducts', routerMongoDbProducts)
-app.use('/mongoCarts', cartRouterMDb)
-app.use('/productList', routerPaginate)
-app.use('/register', registerRouter)
-app.use('/login', loginRouter)
-app.use('/auth', authRouter)
-app.use('/profile', profileRouter)
-
+app.use("/productsFs", routerProduct);
+app.use("/cartsFs", routerCart);
+app.use("/index", routerIndex);
+app.use("/home", routerHome);
+app.use("/chat", routerChat);
+app.use("/realtimeproducts", realTimeRouter);
+app.use("/products", paginateRouter);
+app.use("/mongoProducts", routerMongoDbProducts);
+app.use("/mongoCarts", cartRouterMDb);
+app.use("/productList", routerPaginate);
+app.use("/register", registerRouter);
+app.use("/login", loginRouter);
+app.use("/auth", authRouter);
+app.use("/profile", profileRouter);
 
 // static
 
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(path.join(path.dirname(new URL(import.meta.url).pathname), 'public')));
 
 // handlebars
 
-const handlebars = require('express-handlebars')
+import handlebars from 'express-handlebars';
 
-app.engine('handlebars', handlebars.engine())
-app.set('views', __dirname + '/views')
-app.set('view engine', 'handlebars')
+app.engine('handlebars', handlebars.create({ extname: '.hbs' }).engine);
+app.set('views', path.join(path.dirname(new URL(import.meta.url).pathname), 'views'));
+app.set('view engine', 'handlebars');
 
 //socket
 
-const http = require('http')
-const server = http.createServer(app)
-const { Server } = require('socket.io')
-const io = new Server(server)
-
-
-
+import http from 'http';
+import { Server } from 'socket.io';
+const server = http.createServer(app);
+const io = new Server(server);
 
 //io
 
-let messages = []
-const dbManager = require('./dao/mongoDb/ProductManagerMDb')
-const newMongoProd = new dbManager()
-
-
-
+let messages = [];
+import dbManager from './dao/mongoDb/ProductManagerMDb.js';
+const newMongoProd = new dbManager();
 
 io.on('connection', async (socket) => {
+  try {
+    //realtime
 
-    try {
+    let prodMongo = await newMongoProd.getProducts();
+    socket.emit('products', prodMongo);
+    socket.emit('products', prodMongo);
+    socket.on('connected', async (data) => {
+      console.log(data, 222);
+    });
+    socket.on('updateProducts', async () => {
+      await emitProducts();
+    });
 
-        //realtime
+    //chat
 
-        let prodMongo = await newMongoProd.getProducts()
-        socket.emit('products', prodMongo)
-        socket.emit('products', prodMongo)
-        socket.on('connected', async (data) => {
-            console.log(data, 222);
-        });
-        socket.on('updateProducts', async () => {
-            await emitProducts()
-        })
+    socket.on('chat', async (data) => {
+      try {
+        let chat = new ChatManager();
+        console.log(data);
+        let adding = await chat.addMessage(data);
+        if (!adding) {
+          console.log('error em index chat addMessage');
+          return false;
+        }
+        let getting = await chat.getMessage();
+        if (!getting) {
+          console.log('error em index chat getMessage');
+          return false;
+        }
+        console.log(getting);
+        io.sockets.emit('chat', getting);
+      } catch (err) {
+        console.log(err, 'error en socket en index / chat');
+        return false;
+      }
+    });
 
-        //chat
+    //paginate
 
-        socket.on('chat', async (data) => {
-            try {
-                let chat = new ChatManager
-                console.log(data)
-                let adding = await chat.addMessage(data)
-                if (!adding) {
-                    console.log('error em index chat addMessage')
-                    return false
-                }
-                let getting = await chat.getMessage()
-                if (!getting) {
-                    console.log('error em index chat getMessage')
-                    return false
-                }
-                console.log(getting)
-                io.sockets.emit('chat', getting)
-            } catch (err) {
-                console.log(err, 'error en socket en index / chat')
-                return false
-            }
-        })
+    socket.on('page', async (data) => {
+      try {
+        let { limit, page, category, sort } = data;
+        let b = await { limit, page, category, sort };
+        let a = await newMongoProd.getProducts(b);
+        socket.emit('actualPage', a);
+      } catch (err) {
+        console.log(err);
+      }
+    });
 
-        //paginate
+    socket.on('nextPage', async (data) => {
+      try {
+        console.log(data, 22);
+        let a = await newMongoProd.getProducts(data);
+        socket.emit('paginate', a);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+    socket.on('prevPage', async (data, options) => {
+      try {
+        let a = await newMongoProd.getProducts(data);
+        socket.emit('paginate', a);
+      } catch (err) {
+        console.log(err);
+      }
+    });
 
-        socket.on('page', async (data) => {
-            try {
-                let { limit, page, category, sort } = data
-                let b = await ({ limit, page, category, sort })
-                let a = await newMongoProd.getProducts(b)
-                socket.emit('actualPage', a)
-            } catch (err) {
-                console.log(err)
-            }
-        });
-
-        socket.on('nextPage', async (data) => {
-            try {
-                console.log(data, 22)
-                let a = await newMongoProd.getProducts(data)
-                socket.emit('paginate', a)
-            } catch (err) {
-                console.log(err)
-            }
-        })
-        socket.on('prevPage', async (data, options) => {
-            try {
-                let a = await newMongoProd.getProducts(data)
-                socket.emit('paginate', a)
-            }
-            catch (err) {
-                console.log(err)
-            }
-        })
-
-        socket.emit('paginate', prodMongo);
-
-
-    } catch (err) {
-        console.log(err)
-    }
-})
-
-
-
+    socket.emit('paginate', prodMongo);
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 app.get('/', (req, res) => {
-    res.send('Bienvenido!')
-})
+  res.send('Bienvenido!');
+});
 
 server.listen(PORT, () => {
-    console.log('corriendo en el puerto: ', PORT)
-    Database.connect()
-})
+  console.log('corriendo en el puerto: ', PORT);
+  Database.connect();
+});

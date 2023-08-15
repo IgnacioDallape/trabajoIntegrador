@@ -1,11 +1,13 @@
-const express = require('express')
-const { Router } = express
-const router = new Router()
-const bodyParser = require('body-parser');
-const cartManagerDb = require('../../../dao/mongoDb/CartManagerMongodb');
-const Cart = require('../../../dao/models/Cart');
-const mongoose = require('mongoose');
-const cartMan = new cartManagerDb()
+import express from 'express';
+import { Router } from 'express';
+import bodyParser from 'body-parser';
+import CartManagerMongodb from '../../../dao/mongoDb/CartManagerMongodb.js';
+import Cart from '../../../dao/models/Cart.js';
+import mongoose from 'mongoose';
+
+const router = new Router();
+const cartMan = new CartManagerMongodb();
+
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -152,4 +154,4 @@ router.put('/carts/:cid/products/:pid', async (req, res) => {
 })
 
 
-module.exports = router
+export { router }

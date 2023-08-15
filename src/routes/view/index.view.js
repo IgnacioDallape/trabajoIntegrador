@@ -1,7 +1,7 @@
-const express = require('express')
+import express from 'express'
 const { Router } = express
 const router = new Router()
-const bodyParser = require('body-parser');
+import bodyParser from 'body-parser';
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -18,4 +18,4 @@ router.get('/', (req,res) => {
 })
 
 
-module.exports = router
+export  { router }

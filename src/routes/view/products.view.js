@@ -1,9 +1,10 @@
-const express = require('express')
-const { Router } = express
-const router = new Router()
-const ProductManagerMDb = require('../../dao/mongoDb/ProductManagerMDb')
-const prodMan = new ProductManagerMDb()
-const UserModel = require('../../dao/models/UserModel')
+import express from 'express';
+const { Router } = express;
+const router = new Router();
+import ProductManagerMDb from '../../dao/mongoDb/ProductManagerMDb.js';
+const prodMan = new ProductManagerMDb();
+import UserModel from '../../dao/models/UserModel.js';
+
 
 router.get('/', async (req, res) => {
     try {
@@ -33,8 +34,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-module.exports = router
-
+export  { router }
 
 // router.get('/', async (req, res) => {
 //     const { page, limit } = req.query;

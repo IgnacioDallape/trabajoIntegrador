@@ -1,8 +1,8 @@
-const fs = require('fs')
-const Cart = require('../models/Cart')
-const Product = require('../models/Product')
-const ProductManagerMDb = require('./ProductManagerMDb')
-const prodMan = new ProductManagerMDb()
+import fs from 'fs';
+import Cart from '../models/Cart.js';
+import Product from '../models/Product.js';
+import ProductManagerMDb from './ProductManagerMDb.js';
+const prodMan = new ProductManagerMDb();
 
 class CartManagerMDb {
     constructor() {
@@ -180,4 +180,4 @@ class CartManagerMDb {
     }
 }
 
-module.exports = CartManagerMDb
+export default CartManagerMDb 

@@ -1,9 +1,11 @@
-const passport = require("passport")
-const LocalStrategy = require('passport-local').Strategy
-const UserModel = require('../dao/models/UserModel')
-const { createHash, isValidPassword } = require('../utils/bscrypt')
-const CartManager = require('../dao/mongoDb/CartManagerMongodb')
-const CM = new CartManager()
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+import UserModel from '../dao/models/UserModel.js';
+import { createHash, isValidPassword } from '../utils/bscrypt.js';
+import CartManagerMongodb from '../dao/mongoDb/CartManagerMongodb.js';
+
+const CM = new CartManagerMongodb();
+
 
 const initializePassport = () => {
 
@@ -56,7 +58,7 @@ const initializePassport = () => {
     });
 };
 
-module.exports = initializePassport;
+export { initializePassport }
 
 
 

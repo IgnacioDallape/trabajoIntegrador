@@ -1,5 +1,5 @@
-const passport = require('passport');
-const GithubStrategy = require('passport-github2').Strategy;
+import passport from 'passport';
+import { Strategy as GithubStrategy } from 'passport-github2';
 
 passport.use(
     'github',
@@ -16,4 +16,4 @@ passport.use(
     )
 );
 
-module.exports = passport;
+export { passport };

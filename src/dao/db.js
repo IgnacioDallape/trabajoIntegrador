@@ -1,33 +1,36 @@
-const mongoose = require('mongoose')
-const Cart = require('./models/Cart')
-const dotenv = require('dotenv')
-dotenv.config()
-let password = process.env.PASSWORD
-let UserModel = require('./models/UserModel')
+import mongoose from 'mongoose';
+import Cart from './models/Cart.js';
+import dotenv from 'dotenv';
+import UserModel from './models/UserModel.js';
 
-module.exports = {
+dotenv.config();
+const password = process.env.PASSWORD;
+
+const database = {
     connect: () => {
-        return mongoose.connect(`mongodb+srv://nachoIntegrador:${password}@integradordallape.knrlzeo.mongodb.net/integradorDallape`
-            , { useUnifiedTopology: true, useNewUrlParser: true })
-            .then(db => {
-                // console.log(db.connection.host)
+        return mongoose.connect(
+            `mongodb+srv://nachoIntegrador:${password}@integradordallape.knrlzeo.mongodb.net/integradorDallape`,
+            { useUnifiedTopology: true, useNewUrlParser: true }
+        )
+        .then(() => {
+            console.log('Conexion exitosa a la base de datos');
+        })
+        .catch(err => console.log(err));
+    }
+};
 
-  //-------------function para agregar los usuarios a la db----------------
-              //descomentar la preimera vez para cargr los usuarios a la db y luego volver a comentar
-            //   (async () => {
+// Descomenta la siguiente parte para cargar usuarios en la base de datos
+// (async () => {
+//     try {
+//         await UserModel.insertMany(users);
+//         console.log('Inserted', users.length, 'users');
+//     } catch (error) {
+//         console.error('Error en insert many:', error);
+//     }
+// })();
 
-            //     try {
-            //       await UserModel.insertMany(users);
-            //       console.log('Inserted', users.length, 'users');
-            //     } catch (error) {
-            //       console.error('Error en insert many:', error);
-            //     }
-            //   })();
-              console.log('conexion exitosa a la bd')
-            })
-      .catch(err => console.log(err))
-  }
-}
+export default database;
+
 let users= [{"firstName":"Justino","lastName":"Fidgin","email":"jfidgin0@boston.com","gender":"Male","grade":6,"group":"1B"},
 {"firstName":"Ketty","lastName":"Robson","email":"krobson1@prlog.org","gender":"Female","grade":10,"group":"2A"},
 {"firstName":"Dierdre","lastName":"Barron","email":"dbarron2@dailymail.co.uk","gender":"Female","grade":9,"group":"1B"},

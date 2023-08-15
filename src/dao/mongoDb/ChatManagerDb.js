@@ -1,4 +1,4 @@
-const Chat = require('../models/Chat')
+import { Chat } from '../models/Chat.js';
 
 class ChatManager{
     constructor(){
@@ -37,4 +37,4 @@ class ChatManager{
     }
 }
 
-module.exports = ChatManager
+export { ChatManager }

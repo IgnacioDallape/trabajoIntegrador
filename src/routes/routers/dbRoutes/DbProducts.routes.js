@@ -1,9 +1,10 @@
-const express = require('express')
-const { Router } = express
-const router = new Router()
-const bodyParser = require('body-parser');
-const dbManager = require('../../../dao/mongoDb/ProductManagerMDb')
-const dbProducts = new dbManager()
+import express from 'express';
+import bodyParser from 'body-parser';
+import ProductManagerMDb from '../../../dao/mongoDb/ProductManagerMDb.js';
+
+const { Router } = express;
+const router = new Router();
+const dbProducts = new ProductManagerMDb();
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -86,4 +87,4 @@ router.delete('/delete/products/:pid', async (req,res) => {
 
 
 
-module.exports = router
+export { router }

@@ -1,6 +1,6 @@
-const fs = require('fs')
-const Product = require('../models/Product')
-const mongoose = require('mongoose')
+import fs from 'fs';
+import Product from '../models/Product.js';
+import mongoose from 'mongoose';
 
 class ProductManagerMDb {
 
@@ -85,4 +85,4 @@ class ProductManagerMDb {
 }
 
 
-module.exports = ProductManagerMDb
+export default ProductManagerMDb
