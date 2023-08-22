@@ -1,9 +1,9 @@
 import express from 'express';
 import { Router } from 'express';
 const router = new Router();
-import { createHash, isValidPassword } from '../utils/bscrypt.js';
+import { createHash, isValidPassword } from '../../utils/bscrypt.js';
 import passport from 'passport';
-import UserModel from '../dao/models/UserModel.js';
+import UserModel from '../../dao/models/UserModel.js';
 
 
 router.get('/', (req, res) => {
