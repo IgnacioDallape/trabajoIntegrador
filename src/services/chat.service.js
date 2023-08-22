@@ -1,4 +1,4 @@
-import { ChatManager } from "../mongoDb/ChatManagerDb.js";
+import { ChatManager } from "../dao/mongoDb/ChatManagerDb.js";
 const dbChat = new ChatManager();
 
 const getMessageService = async () =>{

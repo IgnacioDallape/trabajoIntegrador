@@ -1,4 +1,4 @@
-import ProductManagerMDb from "../mongoDb/ProductManagerMDb.js";
+import ProductManagerMDb from "../dao/mongoDb/ProductManagerMDb.js";
 const prodMan = new ProductManagerMDb();
 
 const paginateService = async (req) => {

@@ -19,7 +19,7 @@ import { router as paginateRouter } from "./routes/view/products.view.js";
 import { ChatManager } from "./dao/mongoDb/ChatManagerDb.js";
 import { router as cartRouterMDb } from "./routes/routers/dbRoutes/DbCart.routes.js";
 import { router as routerPaginate } from "./routes/routers/paginate/products.routes.js";
-import { router as authRouter } from "./auth/auth.routes.js";
+import { router as authRouter } from "./routes/auth/auth.routes.js";
 import { initializePassport } from "./config/passport.js";
 import { router as registerRouter } from "./routes/view/register.view.js";
 import { router as loginRouter } from "./routes/view/login.view.js";

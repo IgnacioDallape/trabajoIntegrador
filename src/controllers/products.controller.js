@@ -1,4 +1,4 @@
-import { getProductsService, getProductsByIdService, addProductsService, deleteProductsService } from "../dao/services/products.service.js";
+import { getProductsService, getProductsByIdService, addProductsService, deleteProductsService } from "../services/products.service.js";
 
 
 

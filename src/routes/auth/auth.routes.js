@@ -4,6 +4,12 @@ const router = new Router();
 import { createHash, isValidPassword } from '../../utils/bscrypt.js';
 import passport from 'passport';
 import UserModel from '../../dao/models/UserModel.js';
+import dotenv from 'dotenv';
+dotenv.config();
+
+let admin = process.env.admin
+
+
 
 
 router.get('/', (req, res) => {
@@ -39,7 +45,7 @@ router.post('/login', async (req,res) => {
             res.redirect('/login')
             return
         }
-        if(body.email == 'adminCoder@coder.com'){
+        if(body.email == admin){
             user.role = 'admin'
         }
         let passwordVerification = isValidPassword(user, body.password)

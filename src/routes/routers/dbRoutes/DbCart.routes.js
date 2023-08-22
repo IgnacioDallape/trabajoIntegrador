@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import bodyParser from 'body-parser';
 import CartManagerMongodb from '../../../dao/mongoDb/CartManagerMongodb.js';
-import { addCart, getCartById, getCarts, addProductToCart, deleteProductCartById, deleteProductsCart, updateProductCartById, UpdateProductsCart } from '../../../dao/controllers/cart.controller.js';
+import { addCart, getCartById, getCarts, addProductToCart, deleteProductCartById, deleteProductsCart, updateProductCartById, UpdateProductsCart } from '../../../controllers/cart.controller.js';
 const router = new Router();
 
 router.get('/addCart', addCart)
