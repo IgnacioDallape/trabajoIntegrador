@@ -1,10 +1,68 @@
 import express from "express";
-import path from 'path';
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 const PORT = 8080;
+
+//session
+
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import { config } from "./config/env.js";
+
+app.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl: `mongodb+srv://nachoIntegrador:${config.passwordMongoDb}@integradordallape.knrlzeo.mongodb.net/integradorDallape`,
+      ttl: 1800,
+      autoRemove: "native",
+    }),
+    secret: "secret",
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 1800000,
+      httpOnly: true,
+    },  
+  })  
+  );  
+  
+  //passport
+  
+  import passport from "passport";
+  
+  initializePassport();
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  
+
+
+// static
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+
+app.use(express.static(join(dirname(__filename), 'public')));
+
+// handlebars
+
+import handlebars from 'express-handlebars';
+
+app.engine('handlebars', handlebars.engine());
+app.set('views', join(dirname(__filename), 'views'));
+app.set('view engine', 'handlebars');
+
+//socket
+
+import http from 'http';
+import { Server } from 'socket.io';
+const server = http.createServer(app);
+const io = new Server(server);
+
+
+// routes
+
+
 
 import Database from "./dao/db.js";
 
@@ -25,41 +83,6 @@ import { router as registerRouter } from "./routes/view/register.view.js";
 import { router as loginRouter } from "./routes/view/login.view.js";
 import { router as profileRouter } from "./routes/view/profile.view.js";
 
-//session
-
-import session from "express-session";
-import MongoStore from "connect-mongo";
-import dotenv from "dotenv";
-dotenv.config();
-let password = process.env.PASSWORD;
-
-app.use(
-  session({
-    store: MongoStore.create({
-      mongoUrl: `mongodb+srv://nachoIntegrador:${password}@integradordallape.knrlzeo.mongodb.net/integradorDallape`,
-      ttl: 1800,
-      autoRemove: "native",
-    }),
-    secret: "secret",
-    resave: true,
-    saveUninitialized: true,
-    cookie: {
-      maxAge: 1800000,
-      httpOnly: true,
-    },
-  })
-);
-
-//passport
-
-import passport from "passport";
-
-initializePassport();
-app.use(passport.initialize());
-app.use(passport.session({}));
-
-// routes
-
 app.use("/productsFs", routerProduct);
 app.use("/cartsFs", routerCart);
 app.use("/index", routerIndex);
@@ -75,31 +98,8 @@ app.use("/login", loginRouter);
 app.use("/auth", authRouter);
 app.use("/profile", profileRouter);
 
-// static
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-const __filename = fileURLToPath(import.meta.url);
-
-app.use(express.static(join(dirname(__filename), 'public')));
-
-// handlebars
-
-import handlebars from 'express-handlebars';
-
-app.engine('handlebars', handlebars.engine());
-app.set('views', join(dirname(__filename), 'views'));
-app.set('view engine', 'handlebars');
-
-//socket
-
-import http, { get } from 'http';
-import { Server } from 'socket.io';
-const server = http.createServer(app);
-const io = new Server(server);
-
 //io
 
-let messages = [];
 import dbManager from './dao/mongoDb/ProductManagerMDb.js';
 const newMongoProd = new dbManager();
 let chat = new ChatManager();

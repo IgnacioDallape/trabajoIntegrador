@@ -96,6 +96,12 @@
     width: 2.4rem;
 }
 
+.img__google{
+    border-radius: 1rem;
+    background-color: rgb(216, 216, 216);
+    width: 2.4rem;
+}
+
 /* REGISTER */
 
 .register__padding{

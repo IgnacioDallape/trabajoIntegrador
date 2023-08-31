@@ -1,10 +1,10 @@
-import express from 'express';
 import { Router } from 'express';
 const router = new Router();
-import { createHash, isValidPassword } from '../../utils/bscrypt.js';
-import passport from 'passport';
+import { isValidPassword } from '../../utils/bscrypt.js'
 import UserModel from '../../dao/models/UserModel.js';
+import passport from 'passport';
 import dotenv from 'dotenv';
+import { Passport } from 'passport';
 dotenv.config();
 
 let admin = process.env.admin
@@ -16,8 +16,8 @@ router.get('/', (req, res) => {
     res.send('auth')
 })
 
-router.post('/register', passport.authenticate('register', {failureRedirect: '/auth/failureRedirect'}) ,(req,res) => {
-    try{
+router.post('/register', passport.authenticate('register', { failureRedirect: '/auth/failureRedirect' }), (req, res) => {
+    try {
         console.log('usuario registrado')
         res.redirect('/login')
     } catch (err) {
@@ -26,8 +26,8 @@ router.post('/register', passport.authenticate('register', {failureRedirect: '/a
     }
 })
 
-router.get('/failureRedirect', (req,res) => {
-    try{
+router.get('/failureRedirect', (req, res) => {
+    try {
         console.log('usuario no pudo ser registrado')
         res.send('failed register')
     } catch (err) {
@@ -36,20 +36,20 @@ router.get('/failureRedirect', (req,res) => {
     }
 })
 
-router.post('/login', async (req,res) => {
-    try{
+router.post('/login', async (req, res) => {
+    try {
         let body = req.body
-        let user = await UserModel.findOne( { email: body.email } )
-        if(!user){
+        let user = await UserModel.findOne({ email: body.email })
+        if (!user) {
             console.log('usuario o contraseña invalidos')
             res.redirect('/login')
             return
         }
-        if(body.email == admin){
+        if (body.email == admin) {
             user.role = 'admin'
         }
         let passwordVerification = isValidPassword(user, body.password)
-        if(!passwordVerification){
+        if (!passwordVerification) {
             console.log('usuario o contraseña invalidos')
             res.redirect('/login')
             return
@@ -67,10 +67,10 @@ router.post('/login', async (req,res) => {
     }
 })
 
-router.get('/logout', (req,res) => {
+router.get('/logout', (req, res) => {
     try {
-        req.session.destroy( (err) => {
-            if(err) {
+        req.session.destroy((err) => {
+            if (err) {
                 res.status(401).send('no se pudo eliminar la sesion')
                 return false
             }
@@ -85,13 +85,24 @@ router.get('/logout', (req,res) => {
 
 // GITHUB
 
-router.get('/github', passport.authenticate('github', { scope: ['user:email'], session: false }));
+router.get('/github', passport.authenticate('github', {scope : ['user: email'], session: false}));
 router.get('/github/callback', passport.authenticate('github', { scope: ['user:email'], session: false }), function (req, res) {
-    console.log(req.user,2323)
     req.session.userName = req.user.displayName
     req.session.role = 'user'
     res.redirect('/profile');
 });
 
+//google
 
+router.get('/google',
+    passport.authenticate('google', { scope: ['profile'], session: false }));
+
+
+router.get('/google/callback',
+    passport.authenticate('google', { scope: ['profile'], session: false }),
+    function (req, res) {
+        req.session.userName = req.user.displayName
+        req.session.passport = true
+        res.redirect('/profile')
+    });
 export { router }
