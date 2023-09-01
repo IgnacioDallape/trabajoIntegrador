@@ -4,6 +4,8 @@ const router = new Router();
 import ProductManagerMDb from '../../dao/mongoDb/ProductManagerMDb.js';
 const prodMan = new ProductManagerMDb();
 import UserModel from '../../dao/models/UserModel.js';
+import CartManagerMDb from '../../dao/mongoDb/CartManagerMongodb.js';
+const CM = new CartManagerMDb()
 
 
 router.get('/', async (req, res) => {
@@ -32,6 +34,16 @@ router.get('/', async (req, res) => {
     } catch (err) {
         console.log(err)
         res.send(err)
+    }
+})
+
+router.get('/cart', async (req,res) => {
+    try {
+        console.log(req.session.cart)
+        res.redirect('/profile')
+    } catch (error) {
+        console.log(error);
+        return false
     }
 })
 

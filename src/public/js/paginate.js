@@ -31,3 +31,11 @@ function escribirCarrito () {
     console.log(messageHTML)
 }
 
+// function showCart(){
+//     try {
+        
+//     } catch (error) {
+//         console.log(error);
+//         return false
+//     }
+// }

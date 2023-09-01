@@ -1,4 +1,3 @@
-import Cart from "../dao/models/Cart.js";
 import CartManagerMDb from "../dao/mongoDb/CartManagerMongodb.js";
 const cartMan = new CartManagerMDb();
 

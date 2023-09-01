@@ -6,6 +6,7 @@ import CartManagerMongodb from '../dao/mongoDb/CartManagerMongodb.js';
 import { Strategy as GithubStrategy } from 'passport-github2';
 import { config } from './env.js';
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import { Strategy as FacebookStrategy } from 'passport-facebook';
 
 
 const CM = new CartManagerMongodb();
@@ -47,33 +48,38 @@ const initializePassport = () => {
         }
     }));
 
+    // NO LAS ENCONTRABA EN EL OTRO ARCHIVO PORQUE FALTABA IMPORTARLAS, ENTONCES LAS TRAJE ACA Y FUNCIONAN
 
+    // GITHUB
 
     passport.use('github',
-    new GithubStrategy({
-        clientID: config.clientIdGithub,
-        clientSecret: config.clientSecretGithub,
-        callbackURL: 'http://localhost:8080/auth/github/callback'
-    },
+        new GithubStrategy({
+            clientID: config.clientIdGithub,
+            clientSecret: config.clientSecretGithub,
+            callbackURL: 'http://localhost:8080/auth/github/callback'
+        },
+            function (accessToken, refreshToken, profile, done) {
+                console.log(profile)
+                done(null, profile)
+            }
+        )
+    );
+
+    // GOOGLE
+
+    passport.use('google', new GoogleStrategy(
+        {
+            clientID: '1038362339187-pkdfqh5go977sve9ellc7ekeecbf8j1l.apps.googleusercontent.com',
+            clientSecret: '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',
+            callbackURL: "http://localhost:8080/auth/google/callback"
+        },
         function (accessToken, refreshToken, profile, done) {
             console.log(profile)
+
             done(null, profile)
         }
-    )
-);
+    ));
 
-passport.use('google', new GoogleStrategy(
-    {
-        clientID: '1038362339187-pkdfqh5go977sve9ellc7ekeecbf8j1l.apps.googleusercontent.com',
-        clientSecret: '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',
-        callbackURL: "http://localhost:8080/auth/google/callback"
-    },
-    function (accessToken, refreshToken, profile, done) {
-        console.log(profile)
-
-        done(null, profile)
-    }
-));
 
 
     // passport.use('login', new LocalStrategy(

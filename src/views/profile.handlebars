@@ -2,13 +2,38 @@
     <title>{{title}}</title>
 </head>
 <div class="container">
-    <h1>
-        hola {{name}}!
-    </h1>
+    <div class="d-flex justify-content-center ">
+        <h1>
+            Hola {{name}}!
+        </h1>
+    </div>
+    <div class="d-flex justify-content-center ">
+
+        <h3>
+            Tu rol es : {{role}}
+        </h3>
+    </div>
+
     <h3>
-        Tu rol es : {{role}}
-    </h3>
-    <h3>
-        <a href="/auth/logout">Logout</a>
+        <div class="d-flex  justify-content-center align-items-center">
+            <div class="p-2">
+                <a href="/mongoProducts/getProducts"> <button class="btn btn-dark">Productos!</button> </a>
+            </div>
+
+            <div class="p-2">
+                <a href="/chat"><button class="btn btn-dark">Chat</button></a>
+            </div>
+
+            <div class="p-2">
+                <a href="/auth/logout"> <button class="btn btn-dark">Logout</button></a>
+            </div>
+        </div>
+
+        <div class="p-2 d-flex  justify-content-center align-items-center">
+            <a href="/products"> <button class="btn btn-dark">productos!!</button></a>
+        </div>
+        <div class="p-2 d-flex  justify-content-center align-items-center">
+            <a href="/products/cart"> <button class="btn btn-dark">mi carrito!!</button></a>
+        </div>
     </h3>
 </div>

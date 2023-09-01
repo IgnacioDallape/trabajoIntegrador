@@ -9,9 +9,6 @@ dotenv.config();
 
 let admin = process.env.admin
 
-
-
-
 router.get('/', (req, res) => {
     res.send('auth')
 })
@@ -57,6 +54,7 @@ router.post('/login', async (req, res) => {
         req.session.email = user.email
         req.session.userName = user.firstName;
         req.session.role = user.role
+        req.session.cart = user.cart
         console.log('ingreso exitoso')
         res.redirect('/profile')
         return user
@@ -85,7 +83,7 @@ router.get('/logout', (req, res) => {
 
 // GITHUB
 
-router.get('/github', passport.authenticate('github', {scope : ['user: email'], session: false}));
+router.get('/github', passport.authenticate('github', { scope: ['user: email'], session: false }));
 router.get('/github/callback', passport.authenticate('github', { scope: ['user:email'], session: false }), function (req, res) {
     req.session.userName = req.user.displayName
     req.session.role = 'user'
@@ -103,6 +101,9 @@ router.get('/google/callback',
     function (req, res) {
         req.session.userName = req.user.displayName
         req.session.passport = true
+        req.session.cart = req.user.cart
         res.redirect('/profile')
     });
+
+
 export { router }

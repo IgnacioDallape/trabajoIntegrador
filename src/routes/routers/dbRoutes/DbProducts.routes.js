@@ -3,13 +3,24 @@ import { getProducts, getProductsById, deleteProducts, addProducts } from '../..
 const { Router } = express;
 const router = new Router();
 
-router.get('/getProducts', getProducts)
+function isAdmin(req,res,next){
+    console.log(req,222)
+    let admin = req.session.role
+    if(admin != 'admin'){
+        res.send('solo los administradores pueden hacer esto!')
+    }
+    console.log(admin,22)
+    next()
+}
 
-router.post('/addProducts', addProducts)
+
+router.get('/getProducts', isAdmin ,getProducts)
+
+router.post('/addProducts', isAdmin, addProducts)
 
 router.get('/getProducts/:pid', getProductsById)
 
-router.delete('/delete/products/:pid', deleteProducts)
+router.delete('/delete/products/:pid', isAdmin, deleteProducts)
 
 
 

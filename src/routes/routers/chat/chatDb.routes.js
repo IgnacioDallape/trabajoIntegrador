@@ -1,7 +1,8 @@
 import { Router } from 'express';
-import { getMessage, addMessage, deleteAllMessages} from '../../../dao/controllers/chat.controller';
+import { addMessage, getMessage, deleteAllMessages } from '../../../controllers/chat.controller.js';
 
 const router = new Router();
+
 
 
 router.get('/', getMessage)

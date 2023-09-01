@@ -7,7 +7,6 @@ const getMessage = async (req, res) => {
         const messages = await getMessageService();
         res.send(messages);
     } catch (err) {
-        res.status(500).send(err);
         return false
     }
 }
@@ -17,7 +16,6 @@ const addMessage = async (req, res) => {
         const messages = await addMessageService();
         res.send(messages);
     } catch (err) {
-        res.status(500).send(err);
         return false
     }
 }
@@ -29,7 +27,6 @@ const deleteAllMessages = async (req, res) => {
         let messages = await getMessageService()
         res.send(messages);
     } catch (err) {
-        res.status(500).send(err);
         return false
     }
 }

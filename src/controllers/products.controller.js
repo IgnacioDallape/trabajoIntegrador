@@ -18,7 +18,6 @@ const getProducts = async (req, res) => {
     });
   } catch (err) {
     console.log("error en router de getproducts db");
-    res.status(500).send(err);
   }
 };
 
