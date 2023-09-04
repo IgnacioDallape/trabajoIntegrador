@@ -17,7 +17,8 @@
         <p>Precio: {{this.price}}</p>
 
 
-        <div><button class="btn btn-primary pt-2" onclick="agregarAlCarrito('{{this.title}}','{{this.price}}')">Agregar al
+        <div><button class="btn btn-primary pt-2" onclick="agregarAlCarrito('{{this.title}}','{{this.price}}')">Agregar
+                al
                 Carrito</button></div>
         <div> <button class="btn btn-primary pt-2" onclick="obtenerCarritoDelServidor()">datos del Carrito</button>
         </div>
@@ -45,6 +46,9 @@
         {{#each links}}
         <a href='{{this.href}}' class="btn ">{{this.label}} </a>
         {{/each}}
+    </div>
+    <div>
+        <p>{{this.cart}}</p>
     </div>
 </div>
 <script src="/socket.io/socket.io.js"></script>

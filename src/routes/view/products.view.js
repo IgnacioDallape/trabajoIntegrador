@@ -19,7 +19,6 @@ router.get('/', auth, async (req, res) => {
     try {
         const username = req.session.userName;
         let { page, limit } = req.query
-
         let prod = await prodMan.getProducts(page, limit)
         if(!prod) {
             console.log('error en products.view')
@@ -37,7 +36,9 @@ router.get('/', auth, async (req, res) => {
             links.push({label:i, href:'/products/?page=' + i})
         }
 
-        return res.status(200).render('products', {productos, pagination: rest, links, username, title: 'Productos'  })
+        // const cart = aca iria lo que deberia traer de index desde el local storage para enviarlo a la pagina
+
+        return res.status(200).render('products', {productos, pagination: rest, links, username, title: 'Productos' })
     } catch (err) {
         console.log(err)
         res.send(err)
@@ -49,7 +50,7 @@ let cart
 router.get('/mostrarCarrito', auth, async (req,res) => {
     try {
         const carrito = req.session.carrito || [];
-        console.log(carrito)
+        console.log(carrito, 'este es el carrito de la session')
         res.json({ cart });
         return cart
     } catch (error) {

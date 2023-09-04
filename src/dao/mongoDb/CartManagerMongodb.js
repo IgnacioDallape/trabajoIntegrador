@@ -179,6 +179,7 @@ class CartManagerMDb {
             return false
         }
     }
+
 }
 
 export default CartManagerMDb 
