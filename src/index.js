@@ -52,12 +52,6 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', join(dirname(__filename), 'views'));
 app.set('view engine', 'handlebars');
 
-//socket
-
-import http from 'http';
-import { Server } from 'socket.io';
-const server = http.createServer(app);
-const io = new Server(server);
 
 
 // routes
@@ -98,7 +92,14 @@ app.use("/login", loginRouter);
 app.use("/auth", authRouter);
 app.use("/profile", profileRouter);
 
-//io
+
+//socket
+
+import http from 'http';
+import { Server } from 'socket.io';
+const server = http.createServer(app);
+const io = new Server(server);
+
 
 import dbManager from './dao/mongoDb/ProductManagerMDb.js';
 const newMongoProd = new dbManager();
@@ -106,8 +107,18 @@ let chat = new ChatManager();
 
 io.on('connection', async (socket) => {
   try {
-    //realtime
+    
+    //carrito
+    socket.on("cart", (data) => {
+      console.log("Data recibida desde el cliente:", data);
+      const cart = data
+      console.log(cart,2342)
 
+      // Envía una respuesta de vuelta al cliente en el mismo evento 'cart'
+      socket.emit("cart", "Respuesta desde el servidor");
+  });
+
+    //realtime
     let prodMongo = await newMongoProd.getProducts();
     socket.emit('products', prodMongo);
     socket.emit('products', prodMongo);

@@ -4,37 +4,34 @@
 <div>
     <h4 class="d-flex  justify-content-center align-items-center pb-3">Productos</h4>
     <div class="d-flex  justify-content-end p-2">
-        <a href="/mongoCarts/carts">
-            <button class="btn btn-danger">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart"
-                    viewBox="0 0 16 16">
-                    <path
-                        d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                </svg>
-            </button>
-            <div id="carrito">
-                <p>Carrito</p>
-            </div>
-        </a>
+        <button onclick="getCartFromServer()" class="btn btn-dark"> carrito </button>
     </div>
-    <div class="d-flex  justify-content-center align-items-center pb-3 flex-column" >
-            <h1>Bienvenido, {{username}}</h1>
-            <h3>Los productos son:</h3>
+    <div class="d-flex  justify-content-center align-items-center pb-3 flex-column">
+        <h1>Bienvenido, {{username}}</h1>
+        <h3>Los productos son:</h3>
     </div>
 
     {{#each productos}}
     <div class="d-flex  justify-content-center align-items-center pb-3 flex-column ">
         <p>Producto: {{this.title}} </p>
         <p>Precio: {{this.price}}</p>
-        <button class="btn btn-primary" onclick="agregarAlCarrito('{{this.title}}','{{this.price}}')">Agregar al Carrito</button>
+
+
+        <div><button class="btn btn-primary pt-2" onclick="agregarAlCarrito('{{this.title}}','{{this.price}}')">Agregar al
+                Carrito</button></div>
+        <div> <button class="btn btn-primary pt-2" onclick="obtenerCarritoDelServidor()">datos del Carrito</button>
+        </div>
+        <div> <button class="btn btn-primary pt-2" onclick="vaciarCarrito()">Vaciar Carrito</button>
+        </div>
     </div>
     {{/each}}
 
-    
+
 
     <div class="d-flex justify-content-center align-items-center ">
         {{#if pagination.hasPrevPage}}
-        <a style='font-size: 20;' href='/products/?page={{pagination.prevPage}}' class="btn ">⬅{{pagination.prevPage}}</a>
+        <a style='font-size: 20;' href='/products/?page={{pagination.prevPage}}'
+            class="btn ">⬅{{pagination.prevPage}}</a>
         {{/if}}
         <a style='font-size: 20;' href='#' class="btn ">{{pagination.page}}</a>
         {{#if pagination.hasNextPage}}

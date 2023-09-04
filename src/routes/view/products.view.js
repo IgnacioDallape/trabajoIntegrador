@@ -7,8 +7,15 @@ import UserModel from '../../dao/models/UserModel.js';
 import CartManagerMDb from '../../dao/mongoDb/CartManagerMongodb.js';
 const CM = new CartManagerMDb()
 
+function auth(req,res,next){
+    let sessionUsername = req.session.userName
+    if(!sessionUsername){
+        res.redirect('/login')
+    }
+    next()
+}
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         const username = req.session.userName;
         let { page, limit } = req.query
@@ -37,34 +44,31 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/cart', async (req,res) => {
+let cart
+
+router.get('/mostrarCarrito', auth, async (req,res) => {
     try {
-        console.log(req.session.cart)
-        res.redirect('/profile')
+        const carrito = req.session.carrito || [];
+        console.log(carrito)
+        res.json({ cart });
+        return cart
     } catch (error) {
         console.log(error);
         return false
     }
 })
 
+router.post('/agregarAlCarrito', (req, res) => {
+    const producto = req.body.producto; // Recibe el producto desde el frontend
+
+    if (!req.session.carrito) {
+        req.session.carrito = [];
+    }
+
+    req.session.carrito.push(producto);
+    res.sendStatus(200);
+});
+
+
 export  { router }
 
-// router.get('/', async (req, res) => {
-//     const { page, limit } = req.query;
-//     const dataUsers = await Service.getAll(page, limit);
-
-//     // console.log(dataUsers)
-
-//     let usuarios = dataUsers.docs.map((item) => {
-//         return { firstName: item.firstName, email: item.email };
-//     });
-
-//     const { docs, ...rest } = dataUsers;
-//     let links = [];
-
-//     for (let i = 1; i < rest.totalPages + 1; i++) {
-//         links.push({ label: i, href: 'http://localhost:8080/users/?page=' + i });
-//     }
-//     // console.log(links);
-//     return res.status(200).render('usuarios', { usuarios, pagination: rest, links });
-// });
