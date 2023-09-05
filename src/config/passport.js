@@ -48,6 +48,32 @@ const initializePassport = () => {
         }
     }));
 
+
+    //Login
+
+    passport.use('login', new LocalStrategy({
+        passReqToCallback: true,
+        usernameField: 'email'
+    }, async (req, username, password, done) => {
+        try {
+            let user = await UserModel.findOne({ email: username })
+            if (!user) {
+                console.log('no existe el user')
+                return done(null, false)
+            }
+            let pass = await isValidPassword(user, password)
+            console.log(pass, '//', password)
+            if (!pass) {
+                console.log('contraseña incorrecta');
+                return false;
+            }
+            return done(null, user)
+        } catch (err) {
+            console.log(err)
+            return done('error al encontrar el usuario ' + err)
+        }
+    }));
+
     // NO LAS ENCONTRABA EN EL OTRO ARCHIVO PORQUE FALTABA IMPORTARLAS, ENTONCES LAS TRAJE ACA Y FUNCIONAN
 
     // GITHUB
@@ -106,7 +132,13 @@ const initializePassport = () => {
     // ))
 
 
-    passport.serializeUser((user, done) => {
+    passport.serializeUser((req, user, done) => {
+        req.session.userName = user.firstName  //aca le pongo los datos de la session que me deja acceder al profile en el middleware
+        req.session.email = user.email
+        req.session.role = 'user'
+        if (req.session.email == 'adminCoder@coder.com') {
+            req.session.role = 'admin'
+        }
         done(null, user._id)
     });
 

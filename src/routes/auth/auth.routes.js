@@ -33,35 +33,13 @@ router.get('/failureRedirect', (req, res) => {
     }
 })
 
-router.post('/login', async (req, res) => {
+router.post('/login', passport.authenticate('login', { failureRedirect: '/auth/failureRedirect' }), (req, res) => {
     try {
-        let body = req.body
-        let user = await UserModel.findOne({ email: body.email })
-        if (!user) {
-            console.log('usuario o contraseña invalidos')
-            res.redirect('/login')
-            return
-        }
-        if (body.email == admin) {
-            user.role = 'admin'
-        }
-        let passwordVerification = isValidPassword(user, body.password)
-        if (!passwordVerification) {
-            console.log('usuario o contraseña invalidos')
-            res.redirect('/login')
-            return
-        }
-        req.session.email = user.email
-        req.session.userName = user.firstName;
-        req.session.role = user.role
-        req.session.cart = user.cart
-        console.log('ingreso exitoso')
+        console.log('usuario correctamente ingresado')
         res.redirect('/profile')
-        return user
-
     } catch (err) {
         console.log(err)
-        res.redirect('/login')
+        res.send(err)
     }
 })
 

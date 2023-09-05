@@ -58,6 +58,7 @@ import http from 'http';
 import { Server } from 'socket.io';
 const server = http.createServer(app);
 const io = new Server(server);
+import { localStorageReception } from "./routes/view/products.view.js";
 
 
 import dbManager from './dao/mongoDb/ProductManagerMDb.js';
@@ -73,7 +74,7 @@ io.on('connection', async (socket) => {
       console.log("Data recibida desde el cliente:", data);
       const cart = data;
       
-      console.log(socket.request.session,22);
+      console.log('req', socket.request)
       
       // Envía una respuesta de vuelta al cliente en el mismo evento 'cart'
       socket.emit("cart", "Respuesta desde el servidor");
@@ -166,6 +167,7 @@ io.on('connection', async (socket) => {
   }
 });
 
+export default io
 
 // routes
 
