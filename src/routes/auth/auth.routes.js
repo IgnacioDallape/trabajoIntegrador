@@ -1,10 +1,8 @@
 import { Router } from 'express';
 const router = new Router();
 import { isValidPassword } from '../../utils/bscrypt.js'
-import UserModel from '../../dao/models/UserModel.js';
 import passport from 'passport';
 import dotenv from 'dotenv';
-import { Passport } from 'passport';
 dotenv.config();
 
 let admin = process.env.admin
@@ -63,7 +61,7 @@ router.get('/logout', (req, res) => {
 
 router.get('/github', passport.authenticate('github', { scope: ['user: email'], session: false }));
 router.get('/github/callback', passport.authenticate('github', { scope: ['user:email'], session: false }), function (req, res) {
-    req.session.userName = req.user.displayName
+    req.session.username = req.user.displayName
     req.session.role = 'user'
     res.redirect('/profile');
 });
@@ -77,7 +75,7 @@ router.get('/google',
 router.get('/google/callback',
     passport.authenticate('google', { scope: ['profile'], session: false }),
     function (req, res) {
-        req.session.userName = req.user.displayName
+        req.session.username = req.user.displayName
         req.session.passport = true
         req.session.cart = req.user.cart
         res.redirect('/profile')

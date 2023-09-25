@@ -1,4 +1,4 @@
-import {  addCartService, getCartByIdService, getCartsService , addProductToCartService, deleteProductCartByIdService, deleteProductsCartService, updateProductCartByIdService, UpdateProductsCartService } from "../services/cart.service.js"
+import {  addCartService, getCartByIdService, getCartsService , addProductToCartService, deleteProductCartByIdService, deleteProductsCartService, updateProductCartByIdService, UpdateProductsCartService, purchaseService, purchasesService,deletePurchaseService } from "../services/cart.service.js"
 
 
 const addCart = async (req, res) => {
@@ -118,6 +118,32 @@ const updateProductCartById = async (req, res) => {
     }
 }
 
+//purchases
+
+const purchase = async (req,res) => {
+    try {
+        const cid = req.params.cid
+        const user = req.session.email
+        const newTicket = await purchaseService(cid, user)
+        res.send('hola')
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const purchases = async (req,res) => {
+    try {
+        console.log(req.params)
+    res.send(req.params)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const deletePurchase = async (req,res) => {
+
+}
+
 export {
-    addCart, getCartById, getCarts , addProductToCart, deleteProductCartById, deleteProductsCart, updateProductCartById, UpdateProductsCart
+    addCart, getCartById, getCarts , addProductToCart, deleteProductCartById, deleteProductsCart, updateProductCartById, UpdateProductsCart, purchase, purchases, deletePurchase
 }

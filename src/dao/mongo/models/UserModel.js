@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
-import CartManager from '../mongoDb/CartManagerMongodb.js';
+import { CartManager } from '../../fileSystem/api/cartManager/CartManager.js';
 const CM = new CartManager();
 
 

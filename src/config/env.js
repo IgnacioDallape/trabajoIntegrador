@@ -6,5 +6,6 @@ export const config = {
     clientIdGithub: process.env.CLIENT_ID_GITHUB,
     clientSecretGithub: process.env.CLIENT_SECRET_GITHUB,
     clientIdGoogle :process.env.CLIENT_ID_GOOGLE,
-    clientSecretGoogle : process.env.CLIENT_SECRET_GOOGLE
+    clientSecretGoogle : process.env.CLIENT_SECRET_GOOGLE,
+    PORT: process.env.PORT
 }

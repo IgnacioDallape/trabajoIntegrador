@@ -1,7 +1,5 @@
-import fs from 'fs';
 import Cart from '../models/Cart.js';
-import Product from '../models/Product.js';
-import ProductManagerMDb from './ProductManagerMDb.js';
+import ProductManagerMDb from './Products.dao.js';
 const prodMan = new ProductManagerMDb();
 
 class CartManagerMDb {

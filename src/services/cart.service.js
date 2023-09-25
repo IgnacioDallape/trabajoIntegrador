@@ -1,4 +1,4 @@
-import CartManagerMDb from "../dao/mongoDb/CartManagerMongodb.js";
+import CartManagerMDb from "../dao/mongo/classes/Cart.dao.js";
 const cartMan = new CartManagerMDb();
 
 const addCartService = async () => {
@@ -137,6 +137,18 @@ const updateProductCartByIdService = async (req) => {
     }
 }
 
+async function purchaseService(cid, user){
+    console.log(cid, user)
+}
+
+async function purchasesService(cid, user){
+    console.log(cid, user)
+}
+
+async function deletePurchaseService(cid, user){
+    console.log(cid, user)
+}
+
 export {
-    addCartService, getCartByIdService, getCartsService , addProductToCartService, deleteProductCartByIdService, deleteProductsCartService, updateProductCartByIdService, UpdateProductsCartService
+    addCartService, getCartByIdService, getCartsService , addProductToCartService, deleteProductCartByIdService, deleteProductsCartService, updateProductCartByIdService, UpdateProductsCartService, purchaseService, purchasesService, deletePurchaseService
 }

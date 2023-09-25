@@ -1,11 +1,9 @@
 import express from 'express';
 const { Router } = express;
 const router = new Router();
-import ProductManagerMDb from '../../dao/mongoDb/ProductManagerMDb.js';
+import ProductManagerMDb from '../../dao/mongo/classes/Products.dao.js';
 const prodMan = new ProductManagerMDb();
-import UserModel from '../../dao/models/UserModel.js';
-import CartManagerMDb from '../../dao/mongoDb/CartManagerMongodb.js';
-import io from '../../index.js';
+import CartManagerMDb from '../../dao/mongo/classes/Cart.dao.js';
 const CM = new CartManagerMDb()
 
 function auth(req, res, next) {

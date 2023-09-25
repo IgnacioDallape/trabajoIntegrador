@@ -1,12 +1,12 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
-import UserModel from '../dao/models/UserModel.js';
+import UserModel from '../dao/mongo/models/UserModel.js';
 import { createHash, isValidPassword } from '../utils/bscrypt.js';
-import CartManagerMongodb from '../dao/mongoDb/CartManagerMongodb.js';
+import CartManagerMongodb from '../dao/mongo/classes/Cart.dao.js';
 import { Strategy as GithubStrategy } from 'passport-github2';
 import { config } from './env.js';
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import { Strategy as FacebookStrategy } from 'passport-facebook';
+import Cart from '../dao/mongo/models/Cart.js';
 
 
 const CM = new CartManagerMongodb();
@@ -133,9 +133,11 @@ const initializePassport = () => {
 
 
     passport.serializeUser((req, user, done) => {
-        req.session.userName = user.firstName  //aca le pongo los datos de la session que me deja acceder al profile en el middleware
+        req.session.username = user.firstName  //aca le pongo los datos de la session que me deja acceder al profile en el middleware
         req.session.email = user.email
         req.session.role = 'user'
+        console.log(user)
+        req.session.cart = user.cart
         if (req.session.email == 'adminCoder@coder.com') {
             req.session.role = 'admin'
         }
